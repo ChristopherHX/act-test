@@ -1,0 +1,13 @@
+name: "Test action"
+description: "none"
+inputs:
+  numOctocats:
+    description: 'Number of Octocats'
+    required: false
+    default: '1'
+runs:
+  using: "node12"
+  pre: "pre.js"
+  pre-if: success()
+  post: "post.js"
+  main: "main.js"
