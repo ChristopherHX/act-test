@@ -8,6 +8,12 @@ jobs:
     steps:
       - run: exit 1
 
+  default:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - run: echo "default"
+
   always:
     runs-on: ubuntu-latest
     needs: [build]
