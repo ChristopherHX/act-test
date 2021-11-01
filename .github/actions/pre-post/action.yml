@@ -1,0 +1,7 @@
+name: 'Pre Post'
+description: 'testing pre/post hooks'
+runs:
+  using: 'node12'
+  main: 'index.js'
+  pre: 'pre.js'
+  post: 'post.js'
