@@ -1,48 +1,14 @@
-name: CI
-
 on: [push]
 
 jobs:
-  build:
+  hello_world_job:
     runs-on: ubuntu-latest
+    name: A job to say hello
     steps:
-      - run: echo "build"
-
-  setup:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - run: echo "setup"
-
-  test:
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
-      - run: echo "test"
-      - run: exit 1
-
-  teardown:
-    runs-on: ubuntu-latest
-    needs: [test]
-    if: ${{ always() }}
-    steps:
-      - run: echo "teardown"
-
-  run-if-build:
-    runs-on: ubuntu-latest
-    needs: [test]
-    if: failure()
-    steps:
-      - run: echo "run-if-build"
-
-  after-teardown:
-    runs-on: ubuntu-latest
-    needs: [teardown]
-    steps:
-      - run: echo "after teardown"
-
-  after-test:
-    runs-on: ubuntu-latest
-    needs: [test]
-    steps:
-      - run: echo "after test"
+      - uses: actions/checkout@v2
+      - id: foo
+        uses: ZauberNerd/act-test/.github/actions/composite-action@composite
+        with:
+          who-to-greet: 'Mona the Octocat'
+      - run: echo random-number ${{ steps.foo.outputs.random-number }}
+        shell: bash

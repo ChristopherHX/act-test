@@ -1,0 +1,28 @@
+name: 'Hello World'
+description: 'Greet someone'
+inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-id }}
+runs:
+  using: "composite"
+  steps:
+    - run: echo Hello ${{ inputs.who-to-greet }}.
+      shell: bash
+    - id: random-number-generator
+      run: echo "::set-output name=random-id::$(cat /proc/sys/kernel/random/uuid)"
+      shell: bash
+    - run: ${{ github.action_path }}/goodbye.sh
+      shell: bash
+    - uses: ZauberNerd/act-test/.github/actions/hello-world@composite
+      id: hello
+      with:
+          who-to-greet: 'Mona the Octocat (hello world)'
+    - name: Get the output time
+      shell: bash
+      run: echo "The time was ${{ steps.hello.outputs.time }}"
