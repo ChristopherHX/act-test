@@ -4,26 +4,21 @@ on: push
 
 jobs:
   my_first_job:
-    
     runs-on: ubuntu-latest
     steps:
-      - name: My first false step
-        if: endsWith('Should not', 'o1')
+      - id: second
         uses: ZauberNerd/act-test@pre-post
-        with:
-          ref: refs/pull/${{github.event.pull_request.number}}/merge
-      - name: My first true step
-        if: endsWith('Hello world', 'ld')
-        uses: actions/hello-world-javascript-action@main
-        with:
-          who-to-greet: "Renst the Octocat"
-      - name: My second false step
-        if: endsWith('Should not evaluate', 'o2')
-        uses: ZauberNerd/act-test@pre-post
-        with:
-          ref: refs/pull/${{github.event.pull_request.number}}/merge
-      - name: My third false step
-        if: ${{endsWith('Should not evaluate', 'o3')}}
-        uses: ZauberNerd/act-test@pre-post
-        with:
-          ref: refs/pull/${{github.event.pull_request.number}}/merge
+        env:
+          myNull: ${{ null }}
+          myBoolean: ${{ false }}
+          myIntegerNumber: ${{ 711 }}
+          myFloatNumber: ${{ -9.2 }}
+          myHexNumber: ${{ 0xff }}
+          myExponentialNumber: ${{ -2.99e-2 }}
+          myString: ${{ 'Mona the Octocat' }}
+          myEscapedString: ${{ 'It''s open source!' }}
+          comparison: ${{ fromJSON('"foo"') == 'FOO' }} # broken, but too much work
+          objectFilters: ${{ join(fromJSON('[{"name":"apple"},{"name":"orange"}]').*.name, ',') }} # broken
+          myPr: a${{ github.pull_request.abc.def }}b # should not error
+          startsWith: a${{ join(fromJSON('[0,1]'), github.pull_request.abc.def) }}b # should join 'a01b'
+          formatted: ${{ format('{{Hello {0} {1} {2}!}}', 'Mona', 'the', github.pull_request.abc.def) }} # broken

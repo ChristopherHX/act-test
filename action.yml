@@ -8,5 +8,5 @@ inputs:
 runs:
   using: 'node12'
   main: 'index.js'
-  # pre: 'pre.js'
+  pre: 'pre.js'
   post: 'post.js'
