@@ -11,7 +11,7 @@ jobs:
       - id: continues
         continue-on-error: true
         run: echo "continue" && exit 1
-      - id: after-continue
-        run: echo "after-continue"
       - id: steps-context
-        run: echo ${{ toJSON(steps) }}
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
