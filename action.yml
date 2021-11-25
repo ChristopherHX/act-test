@@ -1,7 +1,12 @@
 name: 'Pre Post'
 description: 'testing pre/post hooks'
+inputs:
+  ref:  # id of input
+    required: true
+    description: 'id of input'
+    default: "a"
 runs:
   using: 'node12'
   main: 'index.js'
-  pre: 'pre.js'
+  # pre: 'pre.js'
   post: 'post.js'

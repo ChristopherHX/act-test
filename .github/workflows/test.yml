@@ -1,15 +1,29 @@
-name: CI
-
-on: [push]
+name: issue-597
+on: push
+  
 
 jobs:
-  job1:
+  my_first_job:
+    
     runs-on: ubuntu-latest
     steps:
-      - run: echo "before"
-      - uses: ZauberNerd/act-test@pre-post
-        if: failure()
-      - run: echo "after"
-      # - run: exit 1
-      # - run: echo "failed stp"
-      #   if: failure()
+      - name: My first false step
+        if: endsWith('Should not', 'o1')
+        uses: ZauberNerd/act-test@pre-post
+        with:
+          ref: refs/pull/${{github.event.pull_request.number}}/merge
+      - name: My first true step
+        if: endsWith('Hello world', 'ld')
+        uses: actions/hello-world-javascript-action@main
+        with:
+          who-to-greet: "Renst the Octocat"
+      - name: My second false step
+        if: endsWith('Should not evaluate', 'o2')
+        uses: ZauberNerd/act-test@pre-post
+        with:
+          ref: refs/pull/${{github.event.pull_request.number}}/merge
+      - name: My third false step
+        if: ${{endsWith('Should not evaluate', 'o3')}}
+        uses: ZauberNerd/act-test@pre-post
+        with:
+          ref: refs/pull/${{github.event.pull_request.number}}/merge
