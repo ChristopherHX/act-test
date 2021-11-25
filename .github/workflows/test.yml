@@ -8,4 +8,8 @@ jobs:
     steps:
       - run: echo "before"
       - uses: ZauberNerd/act-test@pre-post
+        if: failure()
       - run: echo "after"
+      - run: exit 1
+      - run: echo "failed stp"
+        if: failure()
