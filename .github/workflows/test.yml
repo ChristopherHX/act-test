@@ -10,6 +10,6 @@ jobs:
       - uses: ZauberNerd/act-test@pre-post
         if: failure()
       - run: echo "after"
-      - run: exit 1
-      - run: echo "failed stp"
-        if: failure()
+      # - run: exit 1
+      # - run: echo "failed stp"
+      #   if: failure()
