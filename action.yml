@@ -1,12 +1,114 @@
 name: 'Pre Post'
 description: 'testing pre/post hooks'
 inputs:
-  ref:  # id of input
-    required: true
-    description: 'id of input'
-    default: "a"
+  myNull:
+    required: false
+    description: input parameter
+  myBoolean:
+    required: false
+    description: input parameter
+  myIntegerNumber:
+    required: false
+    description: input parameter
+  myFloatNumber:
+    required: false
+    description: input parameter
+  myHexNumber:
+    required: false
+    description: input parameter
+  myExponentialNumber:
+    required: false
+    description: input parameter
+  myString:
+    required: false
+    description: input parameter
+  myEscapedString:
+    required: false
+    description: input parameter
+  logicalGrouping:
+    required: false
+    description: input parameter
+  dereference:
+    required: false
+    description: input parameter
+  index:
+    required: false
+    description: input parameter
+  not:
+    required: false
+    description: input parameter
+  true_lessThan:
+    required: false
+    description: input parameter
+  true_lessThanOrEqual:
+    required: false
+    description: input parameter
+  false_greaterThan:
+    required: false
+    description: input parameter
+  false_greaterThanOrEqual:
+    required: false
+    description: input parameter
+  false_equal:
+    required: false
+    description: input parameter
+  true_notEqual:
+    required: false
+    description: input parameter
+  true_and:
+    required: false
+    description: input parameter
+  true_or:
+    required: false
+    description: input parameter
+  true_lessThanNull:
+    required: false
+    description: input parameter
+  true_lessThanBoolean:
+    required: false
+    description: input parameter
+  true_lessThanString:
+    required: false
+    description: input parameter
+  true_lessThanStringNumber:
+    required: false
+    description: input parameter
+  false_lessThanArray:
+    required: false
+    description: input parameter
+  false_lessThanObject:
+    required: false
+    description: input parameter
+  true_notEqualNaN:
+    required: false
+    description: input parameter
+  true_equalIgnoreCase:
+    required: false
+    description: input parameter
+  true_equalObject:
+    required: false
+    description: input parameter
+  false_equalObject:
+    required: false
+    description: input parameter
+  true_contains_array:
+    required: false
+    description: input parameter
+  false_contains_array:
+    required: false
+    description: input parameter
+  true_contains_null:
+    required: false
+    description: input parameter
+  true_contains_null2:
+    required: false
+    description: input parameter
+  true_contains_string:
+    required: false
+    description: input parameter
+  false_contains_string:
+    required: false
+    description: input parameter
 runs:
   using: 'node12'
   main: 'index.js'
-  pre: 'pre.js'
-  post: 'post.js'

@@ -1,24 +1,178 @@
-name: issue-597
+name: expressions
 on: push
   
 
 jobs:
-  my_first_job:
+  literals:
     runs-on: ubuntu-latest
     steps:
-      - id: second
-        uses: ZauberNerd/act-test@pre-post
+      - name: test literals
+        run: |
+          # null is coerced to empty string:
+          [ "${{ null }}" = "" ]
+          [ "${{ toJSON(null) }}" = "null" ]
+          [ "${{ false }}" = "false" ]
+          [ "${{ 711 }}" = "711" ]
+          [ "${{ -9.2 }}" = "-9.2" ]
+          [ "${{ 0xff }}" = "255" ]
+          [ "${{ -2.99e-2 }}" = "-0.0299" ]
+          [ "${{ Infinity }}" = "Infinity" ]
+          [ "${{ -Infinity }}" = "-Infinity" ]
+          [ "${{ 'Mona the Octocat' }}" = "Mona the Octocat" ]
+          [ "${{ 'It''s open source!' }}" = "It's open source!" ]
+
+  operators:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test operators
+        run: |
+          [ "${{ false || (false || true) }}" = "true" ]
+          [ "${{ github.event_name }}" = "push" ]
+          # string index access returns null:
+          [ "${{ github.event_name[0] }}" = "" ]
+          [ "${{ github.event_name[0] == null }}" = "true" ]
+          [ "${{ github['event_name'] }}" = "push" ]
+          # TODO: figure out why the below array access does not work:
+          # [ "${{ github.event.commits.*.author.username[0] }}" = "ZauberNerd" ]
+          [ "${{ contains(github.event.commits.*.author.username, 'ZauberNerd') }}" = "true" ]
+          [ "${{ !false }}" = "true" ]
+          [ "${{ 1 < 2 }}" = "true" ]
+          [ "${{ 1 <= 2 }}" = "true" ]
+          [ "${{ 1 > 2 }}" = "false" ]
+          [ "${{ 1 >= 2 }}" = "false" ]
+          [ "${{ 1 == 2 }}" = "false" ]
+          [ "${{ 1 != 2 }}" = "true" ]
+          [ "${{ true && true }}" = "true" ]
+          [ "${{ false || true }}" = "true" ]
+      
+      - name: test operators with type coercion to numbers
+        run: |
+          [ "${{ true && 0 }}" = "0" ]
+          [ "${{ true && 1 }}" = "1" ]
+          [ "${{ true && -1 }}" = "-1" ]
+          [ "${{ true && '3' }}" = "3" ]
+          [ "${{ true && null }}" = "" ]
+          [ "${{ 0 && true }}" = "0" ]
+          [ "${{ 1 && true }}" = "true" ]
+          [ "${{ -1 && true }}" = "true" ]
+          [ "${{ '3' && true }}" = "true" ]
+          [ "${{ null && true }}" = "" ]
+          [ "${{ null == 0 }}" = "true" ]
+          [ "${{ true == 1 }}" = "true" ]
+          [ "${{ '' == 0 }}" = "true" ]
+          [ "${{ '3' == 3 }}" = "true" ]
+          # TODO: figure out if we can test for NaN somehow:
+          # [ "${{ fromJSON('["1"]') == NaN }}" = "true" ]
+          # [ "${{ fromJSON('{"a":1}') == NaN }}" = "true" ]
+          [ "${{ NaN != NaN }}" = "true" ]
+          [ "${{ 'MONA' == 'mona' }}" = "true" ]
+          [ "${{ github == github }}" = "true" ]
+          [ "${{ toJSON(fromJSON('{"a":"1"}') == fromJSON('{"a":"1"}')) }}" = "false" ]
+
+  functions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test contains(array, value) with type coercion to strings
+        run: |
+          [ "${{ contains(fromJSON('["first","second"]'), 'first') }}" = "true" ]
+          [ "${{ contains(fromJSON('[null,"second"]'), '') }}" = "true" ]
+          [ "${{ contains(fromJSON('["","second"]'), null) }}" = "true" ]
+          # TODO: investigate why this evaluates to false
+          # [ "${{ contains(fromJSON('[true,"second"]'), 'true') }}" = "true" ]
+          [ "${{ contains(fromJSON('["true","second"]'), 'true') }}" = "true" ]
+          # TODO: investigate why this evaluates to false
+          # [ "${{ contains(fromJSON('["true","second"]'), true) }}" = "true" ]
+          [ "${{ contains(fromJSON('[3.14,"second"]'), '3.14') }}" = "true" ]
+          [ "${{ contains(fromJSON('[3.14,"second"]'), 3.14) }}" = "true" ]
+          [ "${{ contains(fromJSON('["","second"]'), fromJSON('[]')) }}" = "false" ]
+          [ "${{ contains(fromJSON('["","second"]'), fromJSON('{}')) }}" = "false" ]
+          [ "${{ contains('Hello world', 'llo') }}" = "true" ]
+          [ "${{ contains('3.141592', 3.14) }}" = "true" ]
+          [ "${{ contains(3.141592, '3.14') }}" = "true" ]
+          [ "${{ contains(3.141592, 3.14) }}" = "true" ]
+          [ "${{ contains(true, 'u') }}" = "true" ]
+          [ "${{ contains(null, '') }}" = "true" ]
+          [ "${{ cOnTaInS('Hello', 'll') }}" = "true" ]
+
+      - name: Test startsWith(searchString, searchValue) with type coercion to strings
+        run: |
+          [ "${{ startsWith('Hello world', 'Hell') }}" = "true" ]
+          [ "${{ startsWith(3.141592, '3.') }}" = "true" ]
+          [ "${{ startsWith(true, 't') }}" = "true" ]
+          [ "${{ startsWith('truetrue', true) }}" = "true" ]
+
+      - name: Test endsWith(searchString, searchValue) with type coercion to strings
+        run: |
+          [ "${{ endsWith('Hello world', 'ld') }}" = "true" ]
+          [ "${{ endsWith(3.141592, '92') }}" = "true" ]
+          [ "${{ endsWith(true, 'e') }}" = "true" ]
+          [ "${{ endsWith('truetruefalse', false) }}" = "true" ]
+
+      - name: Test format(formatString, ...args) with type coercion to strings
+        run: |
+          [ "${{ format('Hello {0} {1} {2}!', 'Mona', 'the', 'Octocat') }}" = "Hello Mona the Octocat!" ]
+          [ "${{ format('{{Hello {0} {1} {2}!}}', 'Mona', 'the', 'Octocat') }}" = "{Hello Mona the Octocat!}" ]
+          [ "${{ format('Hello "{0}" {1} {2}', null, true, 3.14) }}" = "Hello "" true 3.14" ]
+          [ "${{ format(true) }}" = "true" ]
+
+      - name: Test join(array, separator) with type coercion to strings
+        run: |
+          [ "${{ join(fromJSON('[1,2,3]'), 'x') }}" = "1x2x3" ]
+          [ "${{ join(fromJSON('["a","b","c"]'), '.') }}" = "a.b.c" ]
+          [ "${{ join(fromJSON('[true,false]'), '/') }}" = "true/false" ]
+          [ "${{ join('abc', '.') }}" = "abc" ]
+          [ "${{ join(123, '.') }}" = "123" ]
+          [ "${{ join(true, '/') }}" = "true" ]
+          [ "${{ join(null, NaN) }}" = "" ]
+
+      - name: Test toJSON(value)
+        run: |
+          [ "${{ toJSON(job) }}" = "$(echo -e "{\n  "status": "success"\n}")" ]
+
+      - name: Test fromJSON(value)
+        run: |
+          [ "${{ fromJSON('"3.14"') }}" = "3.14" ]
+
+      - name: Test hashFiles(path)
+        run: |
+          # TODO: investigate why hashFiles() doesn't return a string
+          # [ "${{ hashFiles('**/non-existant-files') }}" = "" ]
+          # [ "${{ hashFiles('**/index.js') }}" = "xxxx" ]
+          # [ "${{ hashFiles('**/for-hashing*') }}" = "xxxx" ]
+          # [ "${{ hashFiles('**/for-hashing-1.txt', '**/for-hashing-2.txt') }}" = "xxxx" ]
+
+      - name: Test object filters
+        run: |
+          [ "${{ join(fromJSON('[{"name":"apple"},{"name":"orange"}]').*.name, ',') }}" = "apple,orange" ]
+
+  contexts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print github context
+        run: echo "github context"
         env:
-          myNull: ${{ null }}
-          myBoolean: ${{ false }}
-          myIntegerNumber: ${{ 711 }}
-          myFloatNumber: ${{ -9.2 }}
-          myHexNumber: ${{ 0xff }}
-          myExponentialNumber: ${{ -2.99e-2 }}
-          myString: ${{ 'Mona the Octocat' }}
-          myEscapedString: ${{ 'It''s open source!' }}
-          comparison: ${{ fromJSON('"foo"') == 'FOO' }} # broken, but too much work
-          objectFilters: ${{ join(fromJSON('[{"name":"apple"},{"name":"orange"}]').*.name, ',') }} # broken
-          myPr: a${{ github.pull_request.abc.def }}b # should not error
-          startsWith: a${{ join(fromJSON('[0,1]'), github.pull_request.abc.def) }}b # should join 'a01b'
-          formatted: ${{ format('{{Hello {0} {1} {2}!}}', 'Mona', 'the', github.pull_request.abc.def) }} # broken
+          PRINT_CONTEXT: ${{ toJSON(github) }}
+      - name: Print env context
+        run: echo "env context"
+        env:
+          PRINT_CONTEXT: ${{ toJSON(env) }}
+      - name: Print job context
+        run: echo "job context"
+        env:
+          PRINT_CONTEXT: ${{ toJSON(job) }}
+      - name: Print steps context
+        run: echo "steps context"
+        env:
+          PRINT_CONTEXT: ${{ toJSON(steps) }}
+      - name: Print runner context
+        run: echo "runner context"
+        env:
+          PRINT_CONTEXT: ${{ toJSON(runner) }}
+      - name: Print needs context
+        run: echo "needs context"
+        env:
+          PRINT_CONTEXT: ${{ toJSON(needs) }}
+      - name: Print inputs context
+        run: echo "inputs context"
+        env:
+          PRINT_CONTEXT: ${{ toJSON(inputs) }}
