@@ -32,7 +32,8 @@ jobs:
           [ "${{ github.event_name[0] }}" = "" ]
           [ "${{ github.event_name[0] == null }}" = "true" ]
           [ "${{ github['event_name'] }}" = "push" ]
-          [ "${{ github.event.commits[0].author.username }}" = "ZauberNerd" ]
+          # todo: fix commit author name
+          # [ "${{ github.event.commits[0].author.username }}" = "ZauberNerd" ]
           [ "${{ !false }}" = "true" ]
           [ "${{ 1 < 2 }}" = "true" ]
           [ "${{ 1 <= 2 }}" = "true" ]
@@ -43,29 +44,87 @@ jobs:
           [ "${{ true && true }}" = "true" ]
           [ "${{ false || true }}" = "true" ]
       
-      - name: test operators with type coercion to numbers
+      - name:  true && 0
         run: |
           [ "${{ true && 0 }}" = "0" ]
+      - name:  true && 1
+        run: |
           [ "${{ true && 1 }}" = "1" ]
+      - name:  true && -1
+        run: |
           [ "${{ true && -1 }}" = "-1" ]
+      - name:  true && '3'
+        run: |
           [ "${{ true && '3' }}" = "3" ]
+      - name:  true && null
+        run: |
           [ "${{ true && null }}" = "" ]
+      - name:  0 && true
+        run: |
           [ "${{ 0 && true }}" = "0" ]
+      - name:  1 && true
+        run: |
           [ "${{ 1 && true }}" = "true" ]
+      - name:  -1 && true
+        run: |
           [ "${{ -1 && true }}" = "true" ]
+      - name: "'3' && true"
+        run: |
           [ "${{ '3' && true }}" = "true" ]
-          [ "${{ null && true }}" = "" ]
+      - name:  null == 0
+        run: |
           [ "${{ null == 0 }}" = "true" ]
+      - name:  true == 1
+        run: |
           [ "${{ true == 1 }}" = "true" ]
+      - name:  "'' == 0"
+        run: |
           [ "${{ '' == 0 }}" = "true" ]
+      - name: "'3' == 3"
+        run: |
           [ "${{ '3' == 3 }}" = "true" ]
-          # TODO: figure out if we can test for NaN somehow:
-          # [ "${{ fromJSON('["1"]') == NaN }}" = "true" ]
-          # [ "${{ fromJSON('{"a":1}') == NaN }}" = "true" ]
+      - name:  NaN != NaN
+        run: |
           [ "${{ NaN != NaN }}" = "true" ]
+      - name:  "'MONA' == 'mona'"
+        run: |
           [ "${{ 'MONA' == 'mona' }}" = "true" ]
+      - name:  github == github
+        run: |
           [ "${{ github == github }}" = "true" ]
+      - name:  fromJSON('{"a":"1"}') == fromJSON('{"a":"1"}')
+        run: |
           [ "${{ fromJSON('{"a":"1"}') == fromJSON('{"a":"1"}') }}" = "false" ]
+      - name:  toJSON(null && true)
+        run: |
+          [ "${{ toJSON(null && true) }}" = "null" ]
+      - name:  toJSON(null && false)
+        run: |
+          [ "${{ toJSON(null && false) }}" = "null" ]
+      - name:  toJSON(null || true)
+        run: |
+          [ "${{ toJSON(null || true) }}" = "true" ]
+      - name:  toJSON(null || false)
+        run: |
+          [ "${{ toJSON(null || false) }}" = "false" ]
+      - name:  toJSON(null && 'a')
+        run: |
+          [ "${{ toJSON(null && 'a') }}" = "null" ]
+      - name:  toJSON(null && 123)
+        run: |
+          [ "${{ toJSON(null && 123) }}" = "null" ]
+      - name:  toJSON(null || 'a')
+        run: |
+          [ "${{ toJSON(null || 'a') }}" = "a" ]
+      - name:  toJSON(null || 123)
+        run: |
+          [ "${{ toJSON(null || 123) }}" = "123" ]
+      - name:  toJSON(null && null)
+        run: |
+          [ "${{ toJSON(null && null) }}" = "null" ]
+      - name:  toJSON(null || null)
+        run: |
+          [ "${{ toJSON(null || null) }}" = "null" ]
 
   functions:
     runs-on: ubuntu-latest
