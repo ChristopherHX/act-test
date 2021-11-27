@@ -43,88 +43,970 @@ jobs:
           [ "${{ 1 != 2 }}" = "true" ]
           [ "${{ true && true }}" = "true" ]
           [ "${{ false || true }}" = "true" ]
-      
-      - name:  true && 0
+
+  booleans:
+    runs-on: ubuntu-latest
+    steps:
+      - name: true && true
         run: |
-          [ "${{ true && 0 }}" = "0" ]
-      - name:  true && 1
+          [[ "${{ toJSON(true && true) }}" = "true" ]]
+      - name: true && false
         run: |
-          [ "${{ true && 1 }}" = "1" ]
-      - name:  true && -1
+          [[ "${{ toJSON(true && false) }}" = "false" ]]
+      - name: true && null
         run: |
-          [ "${{ true && -1 }}" = "-1" ]
-      - name:  true && '3'
+          [[ "${{ toJSON(true && null) }}" = "null" ]]
+      - name: true && -10
         run: |
-          [ "${{ true && '3' }}" = "3" ]
-      - name:  true && null
+          [[ "${{ toJSON(true && -10) }}" = "-10" ]]
+      - name: true && 0
         run: |
-          [ "${{ true && null }}" = "" ]
-      - name:  0 && true
+          [[ "${{ toJSON(true && 0) }}" = "0" ]]
+      - name: true && 10
         run: |
-          [ "${{ 0 && true }}" = "0" ]
-      - name:  1 && true
+          [[ "${{ toJSON(true && 10) }}" = "10" ]]
+      - name: true && 3.14
         run: |
-          [ "${{ 1 && true }}" = "true" ]
-      - name:  -1 && true
+          [[ "${{ toJSON(true && 3.14) }}" = "3.14" ]]
+      - name: true && Infinity
         run: |
-          [ "${{ -1 && true }}" = "true" ]
-      - name: "'3' && true"
+          [[ "${{ toJSON(true && Infinity) }}" = "Infinity" ]]
+      - name: true && -Infinity
         run: |
-          [ "${{ '3' && true }}" = "true" ]
-      - name:  null == 0
+          [[ "${{ toJSON(true && -Infinity) }}" = "-Infinity" ]]
+      - name: true && NaN
         run: |
-          [ "${{ null == 0 }}" = "true" ]
-      - name:  true == 1
+          [[ "${{ toJSON(true && NaN) }}" = "NaN" ]]
+      - name: true && ''
         run: |
-          [ "${{ true == 1 }}" = "true" ]
-      - name:  "'' == 0"
+          [[ "${{ toJSON(true && '') }}" = "" ]]
+      - name: true && '0'
         run: |
-          [ "${{ '' == 0 }}" = "true" ]
-      - name: "'3' == 3"
+          [[ "${{ toJSON(true && '0') }}" = "0" ]]
+      - name: true && 'abc'
         run: |
-          [ "${{ '3' == 3 }}" = "true" ]
-      - name:  NaN != NaN
+          [[ "${{ toJSON(true && 'abc') }}" = "abc" ]]
+
+      - name: false && true
         run: |
-          [ "${{ NaN != NaN }}" = "true" ]
-      - name:  "'MONA' == 'mona'"
+          [[ "${{ toJSON(false && true) }}" = "false" ]]
+      - name: false && false
         run: |
-          [ "${{ 'MONA' == 'mona' }}" = "true" ]
-      - name:  github == github
+          [[ "${{ toJSON(false && false) }}" = "false" ]]
+      - name: false && null
         run: |
-          [ "${{ github == github }}" = "true" ]
-      - name:  fromJSON('{"a":"1"}') == fromJSON('{"a":"1"}')
+          [[ "${{ toJSON(false && null) }}" = "false" ]]
+      - name: false && -10
         run: |
-          [ "${{ fromJSON('{"a":"1"}') == fromJSON('{"a":"1"}') }}" = "false" ]
-      - name:  toJSON(null && true)
+          [[ "${{ toJSON(false && -10) }}" = "false" ]]
+      - name: false && 0
         run: |
-          [ "${{ toJSON(null && true) }}" = "null" ]
-      - name:  toJSON(null && false)
+          [[ "${{ toJSON(false && 0) }}" = "false" ]]
+      - name: false && 10
         run: |
-          [ "${{ toJSON(null && false) }}" = "null" ]
-      - name:  toJSON(null || true)
+          [[ "${{ toJSON(false && 10) }}" = "false" ]]
+      - name: false && 3.14
         run: |
-          [ "${{ toJSON(null || true) }}" = "true" ]
-      - name:  toJSON(null || false)
+          [[ "${{ toJSON(false && 3.14) }}" = "false" ]]
+      - name: false && Infinity
         run: |
-          [ "${{ toJSON(null || false) }}" = "false" ]
-      - name:  toJSON(null && 'a')
+          [[ "${{ toJSON(false && Infinity) }}" = "false" ]]
+      - name: false && -Infinity
         run: |
-          [ "${{ toJSON(null && 'a') }}" = "null" ]
-      - name:  toJSON(null && 123)
+          [[ "${{ toJSON(false && -Infinity) }}" = "false" ]]
+      - name: false && NaN
         run: |
-          [ "${{ toJSON(null && 123) }}" = "null" ]
-      - name:  toJSON(null || 'a')
+          [[ "${{ toJSON(false && NaN) }}" = "false" ]]
+      - name: false && ''
         run: |
-          [ "${{ toJSON(null || 'a') }}" = "a" ]
-      - name:  toJSON(null || 123)
+          [[ "${{ toJSON(false && '') }}" = "false" ]]
+      - name: false && '0'
         run: |
-          [ "${{ toJSON(null || 123) }}" = "123" ]
-      - name:  toJSON(null && null)
+          [[ "${{ toJSON(false && '0') }}" = "false" ]]
+      - name: false && 'abc'
         run: |
-          [ "${{ toJSON(null && null) }}" = "null" ]
-      - name:  toJSON(null || null)
+          [[ "${{ toJSON(false && 'abc') }}" = "false" ]]
+
+      - name: true || true
         run: |
-          [ "${{ toJSON(null || null) }}" = "null" ]
+          [[ "${{ toJSON(true || true) }}" = "true" ]]
+      - name: true || false
+        run: |
+          [[ "${{ toJSON(true || false) }}" = "true" ]]
+      - name: true || null
+        run: |
+          [[ "${{ toJSON(true || null) }}" = "true" ]]
+      - name: true || -10
+        run: |
+          [[ "${{ toJSON(true || -10) }}" = "true" ]]
+      - name: true || 0
+        run: |
+          [[ "${{ toJSON(true || 0) }}" = "true" ]]
+      - name: true || 10
+        run: |
+          [[ "${{ toJSON(true || 10) }}" = "true" ]]
+      - name: true || 3.14
+        run: |
+          [[ "${{ toJSON(true || 3.14) }}" = "true" ]]
+      - name: true || Infinity
+        run: |
+          [[ "${{ toJSON(true || Infinity) }}" = "true" ]]
+      - name: true || -Infinity
+        run: |
+          [[ "${{ toJSON(true || -Infinity) }}" = "true" ]]
+      - name: true || NaN
+        run: |
+          [[ "${{ toJSON(true || NaN) }}" = "true" ]]
+      - name: true || ''
+        run: |
+          [[ "${{ toJSON(true || '') }}" = "true" ]]
+      - name: true || '0'
+        run: |
+          [[ "${{ toJSON(true || '0') }}" = "true" ]]
+      - name: true || 'abc'
+        run: |
+          [[ "${{ toJSON(true || 'abc') }}" = "true" ]]
+
+      - name: false || true
+        run: |
+          [[ "${{ toJSON(false || true) }}" = "true" ]]
+      - name: false || false
+        run: |
+          [[ "${{ toJSON(false || false) }}" = "false" ]]
+      - name: false || null
+        run: |
+          [[ "${{ toJSON(false || null) }}" = "null" ]]
+      - name: false || -10
+        run: |
+          [[ "${{ toJSON(false || -10) }}" = "-10" ]]
+      - name: false || 0
+        run: |
+          [[ "${{ toJSON(false || 0) }}" = "0" ]]
+      - name: false || 10
+        run: |
+          [[ "${{ toJSON(false || 10) }}" = "10" ]]
+      - name: false || 3.14
+        run: |
+          [[ "${{ toJSON(false || 3.14) }}" = "3.14" ]]
+      - name: false || Infinity
+        run: |
+          [[ "${{ toJSON(false || Infinity) }}" = "Infinity" ]]
+      - name: false || -Infinity
+        run: |
+          [[ "${{ toJSON(false || -Infinity) }}" = "-Infinity" ]]
+      - name: false || NaN
+        run: |
+          [[ "${{ toJSON(false || NaN) }}" = "NaN" ]]
+      - name: false || ''
+        run: |
+          [[ "${{ toJSON(false || '') }}" = """" ]]
+      - name: false || '0'
+        run: |
+          [[ "${{ toJSON(false || '0') }}" = ""0"" ]]
+      - name: false || 'abc'
+        run: |
+          [[ "${{ toJSON(false || 'abc') }}" = ""abc"" ]]
+
+      - name: null && true
+        run: |
+          [[ "${{ toJSON(null && true) }}" = "null" ]]
+      - name: null && false
+        run: |
+          [[ "${{ toJSON(null && false) }}" = "null" ]]
+      - name: null && null
+        run: |
+          [[ "${{ toJSON(null && null) }}" = "null" ]]
+      - name: null && -10
+        run: |
+          [[ "${{ toJSON(null && -10) }}" = "null" ]]
+      - name: null && 0
+        run: |
+          [[ "${{ toJSON(null && 0) }}" = "null" ]]
+      - name: null && 10
+        run: |
+          [[ "${{ toJSON(null && 10) }}" = "null" ]]
+      - name: null && 3.14
+        run: |
+          [[ "${{ toJSON(null && 3.14) }}" = "null" ]]
+      - name: null && Infinity
+        run: |
+          [[ "${{ toJSON(null && Infinity) }}" = "null" ]]
+      - name: null && -Infinity
+        run: |
+          [[ "${{ toJSON(null && -Infinity) }}" = "null" ]]
+      - name: null && NaN
+        run: |
+          [[ "${{ toJSON(null && NaN) }}" = "null" ]]
+      - name: null && ''
+        run: |
+          [[ "${{ toJSON(null && '') }}" = "null" ]]
+      - name: null && '0'
+        run: |
+          [[ "${{ toJSON(null && '0') }}" = "null" ]]
+      - name: null && 'abc'
+        run: |
+          [[ "${{ toJSON(null && 'abc') }}" = "null" ]]
+
+      - name: null || true
+        run: |
+          [[ "${{ toJSON(null || true) }}" = "true" ]]
+      - name: null || false
+        run: |
+          [[ "${{ toJSON(null || false) }}" = "false" ]]
+      - name: null || null
+        run: |
+          [[ "${{ toJSON(null || null) }}" = "null" ]]
+      - name: null || -10
+        run: |
+          [[ "${{ toJSON(null || -10) }}" = "-10" ]]
+      - name: null || 0
+        run: |
+          [[ "${{ toJSON(null || 0) }}" = "0" ]]
+      - name: null || 10
+        run: |
+          [[ "${{ toJSON(null || 10) }}" = "10" ]]
+      - name: null || 3.14
+        run: |
+          [[ "${{ toJSON(null || 3.14) }}" = "3.14" ]]
+      - name: null || Infinity
+        run: |
+          [[ "${{ toJSON(null || Infinity) }}" = "Infinity" ]]
+      - name: null || -Infinity
+        run: |
+          [[ "${{ toJSON(null || -Infinity) }}" = "-Infinity" ]]
+      - name: null || NaN
+        run: |
+          [[ "${{ toJSON(null || NaN) }}" = "NaN" ]]
+      - name: null || ''
+        run: |
+          [[ "${{ toJSON(null || '') }}" = """" ]]
+      - name: null || '0'
+        run: |
+          [[ "${{ toJSON(null || '0') }}" = ""0"" ]]
+      - name: null || 'abc'
+        run: |
+          [[ "${{ toJSON(null || 'abc') }}" = ""abc"" ]]
+
+      - name: -10 && true
+        run: |
+          [[ "${{ toJSON(-10 && true) }}" = "true" ]]
+      - name: -10 && false
+        run: |
+          [[ "${{ toJSON(-10 && false) }}" = "false" ]]
+      - name: -10 && null
+        run: |
+          [[ "${{ toJSON(-10 && null) }}" = "null" ]]
+      - name: -10 && -10
+        run: |
+          [[ "${{ toJSON(-10 && -10) }}" = "-10" ]]
+      - name: -10 && 0
+        run: |
+          [[ "${{ toJSON(-10 && 0) }}" = "0" ]]
+      - name: -10 && 10
+        run: |
+          [[ "${{ toJSON(-10 && 10) }}" = "10" ]]
+      - name: -10 && 3.14
+        run: |
+          [[ "${{ toJSON(-10 && 3.14) }}" = "3.14" ]]
+      - name: -10 && Infinity
+        run: |
+          [[ "${{ toJSON(-10 && Infinity) }}" = "Infinity" ]]
+      - name: -10 && -Infinity
+        run: |
+          [[ "${{ toJSON(-10 && -Infinity) }}" = "-Infinity" ]]
+      - name: -10 && NaN
+        run: |
+          [[ "${{ toJSON(-10 && NaN) }}" = "NaN" ]]
+      - name: -10 && ''
+        run: |
+          [[ "${{ toJSON(-10 && '') }}" = """" ]]
+      - name: -10 && '0'
+        run: |
+          [[ "${{ toJSON(-10 && '0') }}" = ""0"" ]]
+      - name: -10 && 'abc'
+        run: |
+          [[ "${{ toJSON(-10 && 'abc') }}" = ""abc"" ]]
+
+      - name: -10 || true
+        run: |
+          [[ "${{ toJSON(-10 || true) }}" = "-10" ]]
+      - name: -10 || false
+        run: |
+          [[ "${{ toJSON(-10 || false) }}" = "-10" ]]
+      - name: -10 || null
+        run: |
+          [[ "${{ toJSON(-10 || null) }}" = "-10" ]]
+      - name: -10 || -10
+        run: |
+          [[ "${{ toJSON(-10 || -10) }}" = "-10" ]]
+      - name: -10 || 0
+        run: |
+          [[ "${{ toJSON(-10 || 0) }}" = "-10" ]]
+      - name: -10 || 10
+        run: |
+          [[ "${{ toJSON(-10 || 10) }}" = "-10" ]]
+      - name: -10 || 3.14
+        run: |
+          [[ "${{ toJSON(-10 || 3.14) }}" = "-10" ]]
+      - name: -10 || Infinity
+        run: |
+          [[ "${{ toJSON(-10 || Infinity) }}" = "-10" ]]
+      - name: -10 || -Infinity
+        run: |
+          [[ "${{ toJSON(-10 || -Infinity) }}" = "-10" ]]
+      - name: -10 || NaN
+        run: |
+          [[ "${{ toJSON(-10 || NaN) }}" = "-10" ]]
+      - name: -10 || ''
+        run: |
+          [[ "${{ toJSON(-10 || '') }}" = "-10" ]]
+      - name: -10 || '0'
+        run: |
+          [[ "${{ toJSON(-10 || '0') }}" = "-10" ]]
+      - name: -10 || 'abc'
+        run: |
+          [[ "${{ toJSON(-10 || 'abc') }}" = "-10" ]]
+
+      - name: 0 && true
+        run: |
+          [[ "${{ toJSON(0 && true) }}" = "0" ]]
+      - name: 0 && false
+        run: |
+          [[ "${{ toJSON(0 && false) }}" = "0" ]]
+      - name: 0 && null
+        run: |
+          [[ "${{ toJSON(0 && null) }}" = "0" ]]
+      - name: 0 && -10
+        run: |
+          [[ "${{ toJSON(0 && -10) }}" = "0" ]]
+      - name: 0 && 0
+        run: |
+          [[ "${{ toJSON(0 && 0) }}" = "0" ]]
+      - name: 0 && 10
+        run: |
+          [[ "${{ toJSON(0 && 10) }}" = "0" ]]
+      - name: 0 && 3.14
+        run: |
+          [[ "${{ toJSON(0 && 3.14) }}" = "0" ]]
+      - name: 0 && Infinity
+        run: |
+          [[ "${{ toJSON(0 && Infinity) }}" = "0" ]]
+      - name: 0 && -Infinity
+        run: |
+          [[ "${{ toJSON(0 && -Infinity) }}" = "0" ]]
+      - name: 0 && NaN
+        run: |
+          [[ "${{ toJSON(0 && NaN) }}" = "0" ]]
+      - name: 0 && ''
+        run: |
+          [[ "${{ toJSON(0 && '') }}" = "0" ]]
+      - name: 0 && '0'
+        run: |
+          [[ "${{ toJSON(0 && '0') }}" = "0" ]]
+      - name: 0 && 'abc'
+        run: |
+          [[ "${{ toJSON(0 && 'abc') }}" = "0" ]]
+
+      - name: 0 || true
+        run: |
+          [[ "${{ toJSON(0 || true) }}" = "true" ]]
+      - name: 0 || false
+        run: |
+          [[ "${{ toJSON(0 || false) }}" = "false" ]]
+      - name: 0 || null
+        run: |
+          [[ "${{ toJSON(0 || null) }}" = "null" ]]
+      - name: 0 || -10
+        run: |
+          [[ "${{ toJSON(0 || -10) }}" = "-10" ]]
+      - name: 0 || 0
+        run: |
+          [[ "${{ toJSON(0 || 0) }}" = "0" ]]
+      - name: 0 || 10
+        run: |
+          [[ "${{ toJSON(0 || 10) }}" = "10" ]]
+      - name: 0 || 3.14
+        run: |
+          [[ "${{ toJSON(0 || 3.14) }}" = "3.14" ]]
+      - name: 0 || Infinity
+        run: |
+          [[ "${{ toJSON(0 || Infinity) }}" = "Infinity" ]]
+      - name: 0 || -Infinity
+        run: |
+          [[ "${{ toJSON(0 || -Infinity) }}" = "-Infinity" ]]
+      - name: 0 || NaN
+        run: |
+          [[ "${{ toJSON(0 || NaN) }}" = "NaN" ]]
+      - name: 0 || ''
+        run: |
+          [[ "${{ toJSON(0 || '') }}" = """" ]]
+      - name: 0 || '0'
+        run: |
+          [[ "${{ toJSON(0 || '0') }}" = ""0"" ]]
+      - name: 0 || 'abc'
+        run: |
+          [[ "${{ toJSON(0 || 'abc') }}" = ""abc"" ]]
+
+      - name: 10 && true
+        run: |
+          [[ "${{ toJSON(10 && true) }}" = "true" ]]
+      - name: 10 && false
+        run: |
+          [[ "${{ toJSON(10 && false) }}" = "false" ]]
+      - name: 10 && null
+        run: |
+          [[ "${{ toJSON(10 && null) }}" = "null" ]]
+      - name: 10 && -10
+        run: |
+          [[ "${{ toJSON(10 && -10) }}" = "-10" ]]
+      - name: 10 && 0
+        run: |
+          [[ "${{ toJSON(10 && 0) }}" = "0" ]]
+      - name: 10 && 10
+        run: |
+          [[ "${{ toJSON(10 && 10) }}" = "10" ]]
+      - name: 10 && 3.14
+        run: |
+          [[ "${{ toJSON(10 && 3.14) }}" = "3.14" ]]
+      - name: 10 && Infinity
+        run: |
+          [[ "${{ toJSON(10 && Infinity) }}" = "Infinity" ]]
+      - name: 10 && -Infinity
+        run: |
+          [[ "${{ toJSON(10 && -Infinity) }}" = "-Infinity" ]]
+      - name: 10 && NaN
+        run: |
+          [[ "${{ toJSON(10 && NaN) }}" = "NaN" ]]
+      - name: 10 && ''
+        run: |
+          [[ "${{ toJSON(10 && '') }}" = """" ]]
+      - name: 10 && '0'
+        run: |
+          [[ "${{ toJSON(10 && '0') }}" = ""0"" ]]
+      - name: 10 && 'abc'
+        run: |
+          [[ "${{ toJSON(10 && 'abc') }}" = ""abc"" ]]
+
+      - name: 10 || true
+        run: |
+          [[ "${{ toJSON(10 || true) }}" = "10" ]]
+      - name: 10 || false
+        run: |
+          [[ "${{ toJSON(10 || false) }}" = "10" ]]
+      - name: 10 || null
+        run: |
+          [[ "${{ toJSON(10 || null) }}" = "10" ]]
+      - name: 10 || -10
+        run: |
+          [[ "${{ toJSON(10 || -10) }}" = "10" ]]
+      - name: 10 || 0
+        run: |
+          [[ "${{ toJSON(10 || 0) }}" = "10" ]]
+      - name: 10 || 10
+        run: |
+          [[ "${{ toJSON(10 || 10) }}" = "10" ]]
+      - name: 10 || 3.14
+        run: |
+          [[ "${{ toJSON(10 || 3.14) }}" = "10" ]]
+      - name: 10 || Infinity
+        run: |
+          [[ "${{ toJSON(10 || Infinity) }}" = "10" ]]
+      - name: 10 || -Infinity
+        run: |
+          [[ "${{ toJSON(10 || -Infinity) }}" = "10" ]]
+      - name: 10 || NaN
+        run: |
+          [[ "${{ toJSON(10 || NaN) }}" = "10" ]]
+      - name: 10 || ''
+        run: |
+          [[ "${{ toJSON(10 || '') }}" = "10" ]]
+      - name: 10 || '0'
+        run: |
+          [[ "${{ toJSON(10 || '0') }}" = "10" ]]
+      - name: 10 || 'abc'
+        run: |
+          [[ "${{ toJSON(10 || 'abc') }}" = "10" ]]
+
+      - name: 3.14 && true
+        run: |
+          [[ "${{ toJSON(3.14 && true) }}" = "true" ]]
+      - name: 3.14 && false
+        run: |
+          [[ "${{ toJSON(3.14 && false) }}" = "false" ]]
+      - name: 3.14 && null
+        run: |
+          [[ "${{ toJSON(3.14 && null) }}" = "null" ]]
+      - name: 3.14 && -10
+        run: |
+          [[ "${{ toJSON(3.14 && -10) }}" = "-10" ]]
+      - name: 3.14 && 0
+        run: |
+          [[ "${{ toJSON(3.14 && 0) }}" = "0" ]]
+      - name: 3.14 && 10
+        run: |
+          [[ "${{ toJSON(3.14 && 10) }}" = "10" ]]
+      - name: 3.14 && 3.14
+        run: |
+          [[ "${{ toJSON(3.14 && 3.14) }}" = "3.14" ]]
+      - name: 3.14 && Infinity
+        run: |
+          [[ "${{ toJSON(3.14 && Infinity) }}" = "Infinity" ]]
+      - name: 3.14 && -Infinity
+        run: |
+          [[ "${{ toJSON(3.14 && -Infinity) }}" = "-Infinity" ]]
+      - name: 3.14 && NaN
+        run: |
+          [[ "${{ toJSON(3.14 && NaN) }}" = "NaN" ]]
+      - name: 3.14 && ''
+        run: |
+          [[ "${{ toJSON(3.14 && '') }}" = """" ]]
+      - name: 3.14 && '0'
+        run: |
+          [[ "${{ toJSON(3.14 && '0') }}" = ""0"" ]]
+      - name: 3.14 && 'abc'
+        run: |
+          [[ "${{ toJSON(3.14 && 'abc') }}" = ""abc"" ]]
+
+      - name: 3.14 || true
+        run: |
+          [[ "${{ toJSON(3.14 || true) }}" = "3.14" ]]
+      - name: 3.14 || false
+        run: |
+          [[ "${{ toJSON(3.14 || false) }}" = "3.14" ]]
+      - name: 3.14 || null
+        run: |
+          [[ "${{ toJSON(3.14 || null) }}" = "3.14" ]]
+      - name: 3.14 || -10
+        run: |
+          [[ "${{ toJSON(3.14 || -10) }}" = "3.14" ]]
+      - name: 3.14 || 0
+        run: |
+          [[ "${{ toJSON(3.14 || 0) }}" = "3.14" ]]
+      - name: 3.14 || 10
+        run: |
+          [[ "${{ toJSON(3.14 || 10) }}" = "3.14" ]]
+      - name: 3.14 || 3.14
+        run: |
+          [[ "${{ toJSON(3.14 || 3.14) }}" = "3.14" ]]
+      - name: 3.14 || Infinity
+        run: |
+          [[ "${{ toJSON(3.14 || Infinity) }}" = "3.14" ]]
+      - name: 3.14 || -Infinity
+        run: |
+          [[ "${{ toJSON(3.14 || -Infinity) }}" = "3.14" ]]
+      - name: 3.14 || NaN
+        run: |
+          [[ "${{ toJSON(3.14 || NaN) }}" = "3.14" ]]
+      - name: 3.14 || ''
+        run: |
+          [[ "${{ toJSON(3.14 || '') }}" = "3.14" ]]
+      - name: 3.14 || '0'
+        run: |
+          [[ "${{ toJSON(3.14 || '0') }}" = "3.14" ]]
+      - name: 3.14 || 'abc'
+        run: |
+          [[ "${{ toJSON(3.14 || 'abc') }}" = "3.14" ]]
+
+      - name: Infinity && true
+        run: |
+          [[ "${{ toJSON(Infinity && true) }}" = "true" ]]
+      - name: Infinity && false
+        run: |
+          [[ "${{ toJSON(Infinity && false) }}" = "false" ]]
+      - name: Infinity && null
+        run: |
+          [[ "${{ toJSON(Infinity && null) }}" = "null" ]]
+      - name: Infinity && -10
+        run: |
+          [[ "${{ toJSON(Infinity && -10) }}" = "-10" ]]
+      - name: Infinity && 0
+        run: |
+          [[ "${{ toJSON(Infinity && 0) }}" = "0" ]]
+      - name: Infinity && 10
+        run: |
+          [[ "${{ toJSON(Infinity && 10) }}" = "10" ]]
+      - name: Infinity && 3.14
+        run: |
+          [[ "${{ toJSON(Infinity && 3.14) }}" = "3.14" ]]
+      - name: Infinity && Infinity
+        run: |
+          [[ "${{ toJSON(Infinity && Infinity) }}" = "Infinity" ]]
+      - name: Infinity && -Infinity
+        run: |
+          [[ "${{ toJSON(Infinity && -Infinity) }}" = "-Infinity" ]]
+      - name: Infinity && NaN
+        run: |
+          [[ "${{ toJSON(Infinity && NaN) }}" = "NaN" ]]
+      - name: Infinity && ''
+        run: |
+          [[ "${{ toJSON(Infinity && '') }}" = """" ]]
+      - name: Infinity && '0'
+        run: |
+          [[ "${{ toJSON(Infinity && '0') }}" = ""0"" ]]
+      - name: Infinity && 'abc'
+        run: |
+          [[ "${{ toJSON(Infinity && 'abc') }}" = ""abc"" ]]
+
+      - name: Infinity || true
+        run: |
+          [[ "${{ toJSON(Infinity || true) }}" = "Infinity" ]]
+      - name: Infinity || false
+        run: |
+          [[ "${{ toJSON(Infinity || false) }}" = "Infinity" ]]
+      - name: Infinity || null
+        run: |
+          [[ "${{ toJSON(Infinity || null) }}" = "Infinity" ]]
+      - name: Infinity || -10
+        run: |
+          [[ "${{ toJSON(Infinity || -10) }}" = "Infinity" ]]
+      - name: Infinity || 0
+        run: |
+          [[ "${{ toJSON(Infinity || 0) }}" = "Infinity" ]]
+      - name: Infinity || 10
+        run: |
+          [[ "${{ toJSON(Infinity || 10) }}" = "Infinity" ]]
+      - name: Infinity || 3.14
+        run: |
+          [[ "${{ toJSON(Infinity || 3.14) }}" = "Infinity" ]]
+      - name: Infinity || Infinity
+        run: |
+          [[ "${{ toJSON(Infinity || Infinity) }}" = "Infinity" ]]
+      - name: Infinity || -Infinity
+        run: |
+          [[ "${{ toJSON(Infinity || -Infinity) }}" = "Infinity" ]]
+      - name: Infinity || NaN
+        run: |
+          [[ "${{ toJSON(Infinity || NaN) }}" = "Infinity" ]]
+      - name: Infinity || ''
+        run: |
+          [[ "${{ toJSON(Infinity || '') }}" = "Infinity" ]]
+      - name: Infinity || '0'
+        run: |
+          [[ "${{ toJSON(Infinity || '0') }}" = "Infinity" ]]
+      - name: Infinity || 'abc'
+        run: |
+          [[ "${{ toJSON(Infinity || 'abc') }}" = "Infinity" ]]
+
+      - name: -Infinity && true
+        run: |
+          [[ "${{ toJSON(-Infinity && true) }}" = "true" ]]
+      - name: -Infinity && false
+        run: |
+          [[ "${{ toJSON(-Infinity && false) }}" = "false" ]]
+      - name: -Infinity && null
+        run: |
+          [[ "${{ toJSON(-Infinity && null) }}" = "null" ]]
+      - name: -Infinity && -10
+        run: |
+          [[ "${{ toJSON(-Infinity && -10) }}" = "-10" ]]
+      - name: -Infinity && 0
+        run: |
+          [[ "${{ toJSON(-Infinity && 0) }}" = "0" ]]
+      - name: -Infinity && 10
+        run: |
+          [[ "${{ toJSON(-Infinity && 10) }}" = "10" ]]
+      - name: -Infinity && 3.14
+        run: |
+          [[ "${{ toJSON(-Infinity && 3.14) }}" = "3.14" ]]
+      - name: -Infinity && Infinity
+        run: |
+          [[ "${{ toJSON(-Infinity && Infinity) }}" = "Infinity" ]]
+      - name: -Infinity && -Infinity
+        run: |
+          [[ "${{ toJSON(-Infinity && -Infinity) }}" = "-Infinity" ]]
+      - name: -Infinity && NaN
+        run: |
+          [[ "${{ toJSON(-Infinity && NaN) }}" = "NaN" ]]
+      - name: -Infinity && ''
+        run: |
+          [[ "${{ toJSON(-Infinity && '') }}" = """" ]]
+      - name: -Infinity && '0'
+        run: |
+          [[ "${{ toJSON(-Infinity && '0') }}" = ""0"" ]]
+      - name: -Infinity && 'abc'
+        run: |
+          [[ "${{ toJSON(-Infinity && 'abc') }}" = ""abc"" ]]
+
+      - name: -Infinity || true
+        run: |
+          [[ "${{ toJSON(-Infinity || true) }}" = "-Infinity" ]]
+      - name: -Infinity || false
+        run: |
+          [[ "${{ toJSON(-Infinity || false) }}" = "-Infinity" ]]
+      - name: -Infinity || null
+        run: |
+          [[ "${{ toJSON(-Infinity || null) }}" = "-Infinity" ]]
+      - name: -Infinity || -10
+        run: |
+          [[ "${{ toJSON(-Infinity || -10) }}" = "-Infinity" ]]
+      - name: -Infinity || 0
+        run: |
+          [[ "${{ toJSON(-Infinity || 0) }}" = "-Infinity" ]]
+      - name: -Infinity || 10
+        run: |
+          [[ "${{ toJSON(-Infinity || 10) }}" = "-Infinity" ]]
+      - name: -Infinity || 3.14
+        run: |
+          [[ "${{ toJSON(-Infinity || 3.14) }}" = "-Infinity" ]]
+      - name: -Infinity || Infinity
+        run: |
+          [[ "${{ toJSON(-Infinity || Infinity) }}" = "-Infinity" ]]
+      - name: -Infinity || -Infinity
+        run: |
+          [[ "${{ toJSON(-Infinity || -Infinity) }}" = "-Infinity" ]]
+      - name: -Infinity || NaN
+        run: |
+          [[ "${{ toJSON(-Infinity || NaN) }}" = "-Infinity" ]]
+      - name: -Infinity || ''
+        run: |
+          [[ "${{ toJSON(-Infinity || '') }}" = "-Infinity" ]]
+      - name: -Infinity || '0'
+        run: |
+          [[ "${{ toJSON(-Infinity || '0') }}" = "-Infinity" ]]
+      - name: -Infinity || 'abc'
+        run: |
+          [[ "${{ toJSON(-Infinity || 'abc') }}" = "-Infinity" ]]
+
+      - name: NaN && true
+        run: |
+          [[ "${{ toJSON(NaN && true) }}" = "NaN" ]]
+      - name: NaN && false
+        run: |
+          [[ "${{ toJSON(NaN && false) }}" = "NaN" ]]
+      - name: NaN && null
+        run: |
+          [[ "${{ toJSON(NaN && null) }}" = "NaN" ]]
+      - name: NaN && -10
+        run: |
+          [[ "${{ toJSON(NaN && -10) }}" = "NaN" ]]
+      - name: NaN && 0
+        run: |
+          [[ "${{ toJSON(NaN && 0) }}" = "NaN" ]]
+      - name: NaN && 10
+        run: |
+          [[ "${{ toJSON(NaN && 10) }}" = "NaN" ]]
+      - name: NaN && 3.14
+        run: |
+          [[ "${{ toJSON(NaN && 3.14) }}" = "NaN" ]]
+      - name: NaN && Infinity
+        run: |
+          [[ "${{ toJSON(NaN && Infinity) }}" = "NaN" ]]
+      - name: NaN && -Infinity
+        run: |
+          [[ "${{ toJSON(NaN && -Infinity) }}" = "NaN" ]]
+      - name: NaN && NaN
+        run: |
+          [[ "${{ toJSON(NaN && NaN) }}" = "NaN" ]]
+      - name: NaN && ''
+        run: |
+          [[ "${{ toJSON(NaN && '') }}" = "NaN" ]]
+      - name: NaN && '0'
+        run: |
+          [[ "${{ toJSON(NaN && '0') }}" = "NaN" ]]
+      - name: NaN && 'abc'
+        run: |
+          [[ "${{ toJSON(NaN && 'abc') }}" = "NaN" ]]
+
+      - name: NaN || true
+        run: |
+          [[ "${{ toJSON(NaN || true) }}" = "true" ]]
+      - name: NaN || false
+        run: |
+          [[ "${{ toJSON(NaN || false) }}" = "false" ]]
+      - name: NaN || null
+        run: |
+          [[ "${{ toJSON(NaN || null) }}" = "null" ]]
+      - name: NaN || -10
+        run: |
+          [[ "${{ toJSON(NaN || -10) }}" = "-10" ]]
+      - name: NaN || 0
+        run: |
+          [[ "${{ toJSON(NaN || 0) }}" = "0" ]]
+      - name: NaN || 10
+        run: |
+          [[ "${{ toJSON(NaN || 10) }}" = "10" ]]
+      - name: NaN || 3.14
+        run: |
+          [[ "${{ toJSON(NaN || 3.14) }}" = "3.14" ]]
+      - name: NaN || Infinity
+        run: |
+          [[ "${{ toJSON(NaN || Infinity) }}" = "Infinity" ]]
+      - name: NaN || -Infinity
+        run: |
+          [[ "${{ toJSON(NaN || -Infinity) }}" = "-Infinity" ]]
+      - name: NaN || NaN
+        run: |
+          [[ "${{ toJSON(NaN || NaN) }}" = "NaN" ]]
+      - name: NaN || ''
+        run: |
+          [[ "${{ toJSON(NaN || '') }}" = """" ]]
+      - name: NaN || '0'
+        run: |
+          [[ "${{ toJSON(NaN || '0') }}" = ""0"" ]]
+      - name: NaN || 'abc'
+        run: |
+          [[ "${{ toJSON(NaN || 'abc') }}" = ""abc"" ]]
+
+      - name: "'' && true"
+        run: |
+          [[ "${{ toJSON('' && true) }}" = "" ]]
+      - name: "'' && false"
+        run: |
+          [[ "${{ toJSON('' && false) }}" = "" ]]
+      - name: "'' && null"
+        run: |
+          [[ "${{ toJSON('' && null) }}" = "" ]]
+      - name: "'' && -10"
+        run: |
+          [[ "${{ toJSON('' && -10) }}" = "" ]]
+      - name: "'' && 0"
+        run: |
+          [[ "${{ toJSON('' && 0) }}" = "" ]]
+      - name: "'' && 10"
+        run: |
+          [[ "${{ toJSON('' && 10) }}" = "" ]]
+      - name: "'' && 3.14"
+        run: |
+          [[ "${{ toJSON('' && 3.14) }}" = "" ]]
+      - name: "'' && Infinity"
+        run: |
+          [[ "${{ toJSON('' && Infinity) }}" = "" ]]
+      - name: "'' && -Infinity"
+        run: |
+          [[ "${{ toJSON('' && -Infinity) }}" = "" ]]
+      - name: "'' && NaN"
+        run: |
+          [[ "${{ toJSON('' && NaN) }}" = "" ]]
+      - name: "'' && ''"
+        run: |
+          [[ "${{ toJSON('' && '') }}" = "" ]]
+      - name: "'' && '0'"
+        run: |
+          [[ "${{ toJSON('' && '0') }}" = "" ]]
+      - name: "'' && 'abc'"
+        run: |
+          [[ "${{ toJSON('' && 'abc') }}" = "" ]]
+
+      - name: "'' || true"
+        run: |
+          [[ "${{ toJSON('' || true) }}" = "true" ]]
+      - name: "'' || false"
+        run: |
+          [[ "${{ toJSON('' || false) }}" = "false" ]]
+      - name: "'' || null"
+        run: |
+          [[ "${{ toJSON('' || null) }}" = "null" ]]
+      - name: "'' || -10"
+        run: |
+          [[ "${{ toJSON('' || -10) }}" = "-10" ]]
+      - name: "'' || 0"
+        run: |
+          [[ "${{ toJSON('' || 0) }}" = "0" ]]
+      - name: "'' || 10"
+        run: |
+          [[ "${{ toJSON('' || 10) }}" = "10" ]]
+      - name: "'' || 3.14"
+        run: |
+          [[ "${{ toJSON('' || 3.14) }}" = "3.14" ]]
+      - name: "'' || Infinity"
+        run: |
+          [[ "${{ toJSON('' || Infinity) }}" = "Infinity" ]]
+      - name: "'' || -Infinity"
+        run: |
+          [[ "${{ toJSON('' || -Infinity) }}" = "-Infinity" ]]
+      - name: "'' || NaN"
+        run: |
+          [[ "${{ toJSON('' || NaN) }}" = "NaN" ]]
+      - name: "'' || ''"
+        run: |
+          [[ "${{ toJSON('' || '') }}" = """" ]]
+      - name: "'' || '0'"
+        run: |
+          [[ "${{ toJSON('' || '0') }}" = ""0"" ]]
+      - name: "'' || 'abc'"
+        run: |
+          [[ "${{ toJSON('' || 'abc') }}" = ""abc"" ]]
+
+      - name: "'abc' && true"
+        run: |
+          [[ "${{ toJSON('abc' && true) }}" = "true" ]]
+      - name: "'abc' && false"
+        run: |
+          [[ "${{ toJSON('abc' && false) }}" = "false" ]]
+      - name: "'abc' && null"
+        run: |
+          [[ "${{ toJSON('abc' && null) }}" = "null" ]]
+      - name: "'abc' && -10"
+        run: |
+          [[ "${{ toJSON('abc' && -10) }}" = "-10" ]]
+      - name: "'abc' && 0"
+        run: |
+          [[ "${{ toJSON('abc' && 0) }}" = "0" ]]
+      - name: "'abc' && 10"
+        run: |
+          [[ "${{ toJSON('abc' && 10) }}" = "10" ]]
+      - name: "'abc' && 3.14"
+        run: |
+          [[ "${{ toJSON('abc' && 3.14) }}" = "3.14" ]]
+      - name: "'abc' && Infinity"
+        run: |
+          [[ "${{ toJSON('abc' && Infinity) }}" = "Infinity" ]]
+      - name: "'abc' && -Infinity"
+        run: |
+          [[ "${{ toJSON('abc' && -Infinity) }}" = "-Infinity" ]]
+      - name: "'abc' && NaN"
+        run: |
+          [[ "${{ toJSON('abc' && NaN) }}" = "NaN" ]]
+      - name: "'abc' && ''"
+        run: |
+          [[ "${{ toJSON('abc' && '') }}" = """" ]]
+      - name: "'abc' && '0'"
+        run: |
+          [[ "${{ toJSON('abc' && '0') }}" = ""0"" ]]
+      - name: "'abc' && 'abc'"
+        run: |
+          [[ "${{ toJSON('abc' && 'abc') }}" = ""abc"" ]]
+
+      - name: "'abc' || true"
+        run: |
+          [[ "${{ toJSON('abc' || true) }}" = "abc" ]]
+      - name: "'abc' || false"
+        run: |
+          [[ "${{ toJSON('abc' || false) }}" = "abc" ]]
+      - name: "'abc' || null"
+        run: |
+          [[ "${{ toJSON('abc' || null) }}" = "abc" ]]
+      - name: "'abc' || -10"
+        run: |
+          [[ "${{ toJSON('abc' || -10) }}" = "abc" ]]
+      - name: "'abc' || 0"
+        run: |
+          [[ "${{ toJSON('abc' || 0) }}" = "abc" ]]
+      - name: "'abc' || 10"
+        run: |
+          [[ "${{ toJSON('abc' || 10) }}" = "abc" ]]
+      - name: "'abc' || 3.14"
+        run: |
+          [[ "${{ toJSON('abc' || 3.14) }}" = "abc" ]]
+      - name: "'abc' || Infinity"
+        run: |
+          [[ "${{ toJSON('abc' || Infinity) }}" = "abc" ]]
+      - name: "'abc' || -Infinity"
+        run: |
+          [[ "${{ toJSON('abc' || -Infinity) }}" = "abc" ]]
+      - name: "'abc' || NaN"
+        run: |
+          [[ "${{ toJSON('abc' || NaN) }}" = "abc" ]]
+      - name: "'abc' || ''"
+        run: |
+          [[ "${{ toJSON('abc' || '') }}" = "abc" ]]
+      - name: "'abc' || '0'"
+        run: |
+          [[ "${{ toJSON('abc' || '0') }}" = "abc" ]]
+      - name: "'abc' || 'abc'"
+        run: |
+          [[ "${{ toJSON('abc' || 'abc') }}" = "abc" ]]
+
 
   functions:
     runs-on: ubuntu-latest
