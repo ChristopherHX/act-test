@@ -44,6 +44,39 @@ jobs:
           [ "${{ true && true }}" = "true" ]
           [ "${{ false || true }}" = "true" ]
 
+  comparisons:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test comparisons
+        run: |
+          [ "${{ !null }}" = "true" ]
+          [ "${{ !true }}" = "false" ]
+          [ "${{ !false }}" = "true" ]
+          [ "${{ !-10 }}" = "false" ]
+          [ "${{ !0 }}" = "true" ]
+          [ "${{ !10 }}" = "false" ]
+          [ "${{ !3.14 }}" = "false" ]
+          [ "${{ !Infinity }}" = "false" ]
+          [ "${{ !-Infinity }}" = "false" ]
+          [ "${{ !NaN }}" = "true" ]
+          [ "${{ !'' }}" = "true" ]
+          [ "${{ !'abc' }}" = "false" ]
+          [ "${{ !fromJSON('[]') }}" = "false" ]
+          [ "${{ !fromJSON('[1]') }}" = "false" ]
+          [ "${{ !fromJSON('{}') }}" = "false" ]
+          [ "${{ !fromJSON('{"a":1}') }}" = "false" ]
+
+          [ "${{ null < 2 }}" = "true" ]
+          [ "${{ true < 1 }}" = "false" ]
+          [ "${{ Infinity < 2 }}" = "false" ]
+          [ "${{ NaN < 2 }}" = "false" ]
+          [ "${{ '' < 2 }}" = "true" ]
+          [ "${{ 'abc' < 2 }}" = "false" ]
+          [ "${{ fromJSON('[]') < 2 }}" = "false" ]
+          [ "${{ fromJSON('[1]') < 2 }}" = "false" ]
+          [ "${{ fromJSON('{}') < 2 }}" = "false" ]
+          [ "${{ fromJSON('{"a":1}') < 2 }}" = "false" ]
+
   booleans:
     runs-on: ubuntu-latest
     steps:
