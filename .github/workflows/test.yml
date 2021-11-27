@@ -27,15 +27,12 @@ jobs:
       - name: test operators
         run: |
           [ "${{ false || (false || true) }}" = "true" ]
-          [ "${{ (true,false) }}" = "false" ]
           [ "${{ github.event_name }}" = "push" ]
           # string index access returns null:
           [ "${{ github.event_name[0] }}" = "" ]
           [ "${{ github.event_name[0] == null }}" = "true" ]
           [ "${{ github['event_name'] }}" = "push" ]
-          # TODO: figure out why the below array access does not work:
-          # [ "${{ github.event.commits.*.author.username[0] }}" = "ZauberNerd" ]
-          [ "${{ contains(github.event.commits.*.author.username, 'ZauberNerd') }}" = "true" ]
+          [ "${{ github.event.commits[0].author.username }}" = "ZauberNerd" ]
           [ "${{ !false }}" = "true" ]
           [ "${{ 1 < 2 }}" = "true" ]
           [ "${{ 1 <= 2 }}" = "true" ]
