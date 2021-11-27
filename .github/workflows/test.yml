@@ -27,6 +27,8 @@ jobs:
       - name: test operators
         run: |
           [ "${{ false || (false || true) }}" = "true" ]
+          [ "${{ true,false }}" = "false" ]
+          [ "${{ (true,false) }}" = "false" ]
           [ "${{ github.event_name }}" = "push" ]
           # string index access returns null:
           [ "${{ github.event_name[0] }}" = "" ]
@@ -67,7 +69,7 @@ jobs:
           [ "${{ NaN != NaN }}" = "true" ]
           [ "${{ 'MONA' == 'mona' }}" = "true" ]
           [ "${{ github == github }}" = "true" ]
-          [ "${{ toJSON(fromJSON('{"a":"1"}') == fromJSON('{"a":"1"}')) }}" = "false" ]
+          [ "${{ fromJSON('{"a":"1"}') == fromJSON('{"a":"1"}') }}" = "false" ]
 
   functions:
     runs-on: ubuntu-latest
