@@ -27,7 +27,6 @@ jobs:
       - name: test operators
         run: |
           [ "${{ false || (false || true) }}" = "true" ]
-          [ "${{ true,false }}" = "false" ]
           [ "${{ (true,false) }}" = "false" ]
           [ "${{ github.event_name }}" = "push" ]
           # string index access returns null:
