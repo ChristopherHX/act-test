@@ -68,6 +68,9 @@ jobs:
       - name: true && 3.14
         run: |
           [[ "${{ toJSON(true && 3.14) }}" = "3.14" ]]
+      - name: true && 0.0
+        run: |
+          [[ "${{ toJSON(true && 0.0) }}" = "0" ]]
       - name: true && Infinity
         run: |
           [[ "${{ toJSON(true && Infinity) }}" = "Infinity" ]]
@@ -80,9 +83,6 @@ jobs:
       - name: true && ''
         run: |
           [[ "${{ toJSON(true && '') }}" = "" ]]
-      - name: true && '0'
-        run: |
-          [[ "${{ toJSON(true && '0') }}" = "0" ]]
       - name: true && 'abc'
         run: |
           [[ "${{ toJSON(true && 'abc') }}" = "abc" ]]
@@ -108,6 +108,9 @@ jobs:
       - name: false && 3.14
         run: |
           [[ "${{ toJSON(false && 3.14) }}" = "false" ]]
+      - name: false && 0.0
+        run: |
+          [[ "${{ toJSON(false && 0.0) }}" = "false" ]]
       - name: false && Infinity
         run: |
           [[ "${{ toJSON(false && Infinity) }}" = "false" ]]
@@ -120,9 +123,6 @@ jobs:
       - name: false && ''
         run: |
           [[ "${{ toJSON(false && '') }}" = "false" ]]
-      - name: false && '0'
-        run: |
-          [[ "${{ toJSON(false && '0') }}" = "false" ]]
       - name: false && 'abc'
         run: |
           [[ "${{ toJSON(false && 'abc') }}" = "false" ]]
@@ -148,6 +148,9 @@ jobs:
       - name: true || 3.14
         run: |
           [[ "${{ toJSON(true || 3.14) }}" = "true" ]]
+      - name: true || 0.0
+        run: |
+          [[ "${{ toJSON(true || 0.0) }}" = "true" ]]
       - name: true || Infinity
         run: |
           [[ "${{ toJSON(true || Infinity) }}" = "true" ]]
@@ -160,9 +163,6 @@ jobs:
       - name: true || ''
         run: |
           [[ "${{ toJSON(true || '') }}" = "true" ]]
-      - name: true || '0'
-        run: |
-          [[ "${{ toJSON(true || '0') }}" = "true" ]]
       - name: true || 'abc'
         run: |
           [[ "${{ toJSON(true || 'abc') }}" = "true" ]]
@@ -188,6 +188,9 @@ jobs:
       - name: false || 3.14
         run: |
           [[ "${{ toJSON(false || 3.14) }}" = "3.14" ]]
+      - name: false || 0.0
+        run: |
+          [[ "${{ toJSON(false || 0.0) }}" = "0" ]]
       - name: false || Infinity
         run: |
           [[ "${{ toJSON(false || Infinity) }}" = "Infinity" ]]
@@ -200,9 +203,6 @@ jobs:
       - name: false || ''
         run: |
           [[ "${{ toJSON(false || '') }}" = """" ]]
-      - name: false || '0'
-        run: |
-          [[ "${{ toJSON(false || '0') }}" = ""0"" ]]
       - name: false || 'abc'
         run: |
           [[ "${{ toJSON(false || 'abc') }}" = ""abc"" ]]
@@ -228,6 +228,9 @@ jobs:
       - name: null && 3.14
         run: |
           [[ "${{ toJSON(null && 3.14) }}" = "null" ]]
+      - name: null && 0.0
+        run: |
+          [[ "${{ toJSON(null && 0.0) }}" = "null" ]]
       - name: null && Infinity
         run: |
           [[ "${{ toJSON(null && Infinity) }}" = "null" ]]
@@ -240,9 +243,6 @@ jobs:
       - name: null && ''
         run: |
           [[ "${{ toJSON(null && '') }}" = "null" ]]
-      - name: null && '0'
-        run: |
-          [[ "${{ toJSON(null && '0') }}" = "null" ]]
       - name: null && 'abc'
         run: |
           [[ "${{ toJSON(null && 'abc') }}" = "null" ]]
@@ -268,6 +268,9 @@ jobs:
       - name: null || 3.14
         run: |
           [[ "${{ toJSON(null || 3.14) }}" = "3.14" ]]
+      - name: null || 0.0
+        run: |
+          [[ "${{ toJSON(null || 0.0) }}" = "0" ]]
       - name: null || Infinity
         run: |
           [[ "${{ toJSON(null || Infinity) }}" = "Infinity" ]]
@@ -280,9 +283,6 @@ jobs:
       - name: null || ''
         run: |
           [[ "${{ toJSON(null || '') }}" = """" ]]
-      - name: null || '0'
-        run: |
-          [[ "${{ toJSON(null || '0') }}" = ""0"" ]]
       - name: null || 'abc'
         run: |
           [[ "${{ toJSON(null || 'abc') }}" = ""abc"" ]]
@@ -308,6 +308,9 @@ jobs:
       - name: -10 && 3.14
         run: |
           [[ "${{ toJSON(-10 && 3.14) }}" = "3.14" ]]
+      - name: -10 && 0.0
+        run: |
+          [[ "${{ toJSON(-10 && 0.0) }}" = "0" ]]
       - name: -10 && Infinity
         run: |
           [[ "${{ toJSON(-10 && Infinity) }}" = "Infinity" ]]
@@ -320,9 +323,6 @@ jobs:
       - name: -10 && ''
         run: |
           [[ "${{ toJSON(-10 && '') }}" = """" ]]
-      - name: -10 && '0'
-        run: |
-          [[ "${{ toJSON(-10 && '0') }}" = ""0"" ]]
       - name: -10 && 'abc'
         run: |
           [[ "${{ toJSON(-10 && 'abc') }}" = ""abc"" ]]
@@ -348,6 +348,9 @@ jobs:
       - name: -10 || 3.14
         run: |
           [[ "${{ toJSON(-10 || 3.14) }}" = "-10" ]]
+      - name: -10 || 0.0
+        run: |
+          [[ "${{ toJSON(-10 || 0.0) }}" = "-10" ]]
       - name: -10 || Infinity
         run: |
           [[ "${{ toJSON(-10 || Infinity) }}" = "-10" ]]
@@ -360,9 +363,6 @@ jobs:
       - name: -10 || ''
         run: |
           [[ "${{ toJSON(-10 || '') }}" = "-10" ]]
-      - name: -10 || '0'
-        run: |
-          [[ "${{ toJSON(-10 || '0') }}" = "-10" ]]
       - name: -10 || 'abc'
         run: |
           [[ "${{ toJSON(-10 || 'abc') }}" = "-10" ]]
@@ -388,6 +388,9 @@ jobs:
       - name: 0 && 3.14
         run: |
           [[ "${{ toJSON(0 && 3.14) }}" = "0" ]]
+      - name: 0 && 0.0
+        run: |
+          [[ "${{ toJSON(0 && 0.0) }}" = "0" ]]
       - name: 0 && Infinity
         run: |
           [[ "${{ toJSON(0 && Infinity) }}" = "0" ]]
@@ -400,9 +403,6 @@ jobs:
       - name: 0 && ''
         run: |
           [[ "${{ toJSON(0 && '') }}" = "0" ]]
-      - name: 0 && '0'
-        run: |
-          [[ "${{ toJSON(0 && '0') }}" = "0" ]]
       - name: 0 && 'abc'
         run: |
           [[ "${{ toJSON(0 && 'abc') }}" = "0" ]]
@@ -428,6 +428,9 @@ jobs:
       - name: 0 || 3.14
         run: |
           [[ "${{ toJSON(0 || 3.14) }}" = "3.14" ]]
+      - name: 0 || 0.0
+        run: |
+          [[ "${{ toJSON(0 || 0.0) }}" = "0" ]]
       - name: 0 || Infinity
         run: |
           [[ "${{ toJSON(0 || Infinity) }}" = "Infinity" ]]
@@ -440,9 +443,6 @@ jobs:
       - name: 0 || ''
         run: |
           [[ "${{ toJSON(0 || '') }}" = """" ]]
-      - name: 0 || '0'
-        run: |
-          [[ "${{ toJSON(0 || '0') }}" = ""0"" ]]
       - name: 0 || 'abc'
         run: |
           [[ "${{ toJSON(0 || 'abc') }}" = ""abc"" ]]
@@ -468,6 +468,9 @@ jobs:
       - name: 10 && 3.14
         run: |
           [[ "${{ toJSON(10 && 3.14) }}" = "3.14" ]]
+      - name: 10 && 0.0
+        run: |
+          [[ "${{ toJSON(10 && 0.0) }}" = "0" ]]
       - name: 10 && Infinity
         run: |
           [[ "${{ toJSON(10 && Infinity) }}" = "Infinity" ]]
@@ -480,9 +483,6 @@ jobs:
       - name: 10 && ''
         run: |
           [[ "${{ toJSON(10 && '') }}" = """" ]]
-      - name: 10 && '0'
-        run: |
-          [[ "${{ toJSON(10 && '0') }}" = ""0"" ]]
       - name: 10 && 'abc'
         run: |
           [[ "${{ toJSON(10 && 'abc') }}" = ""abc"" ]]
@@ -508,6 +508,9 @@ jobs:
       - name: 10 || 3.14
         run: |
           [[ "${{ toJSON(10 || 3.14) }}" = "10" ]]
+      - name: 10 || 0.0
+        run: |
+          [[ "${{ toJSON(10 || 0.0) }}" = "10" ]]
       - name: 10 || Infinity
         run: |
           [[ "${{ toJSON(10 || Infinity) }}" = "10" ]]
@@ -520,9 +523,6 @@ jobs:
       - name: 10 || ''
         run: |
           [[ "${{ toJSON(10 || '') }}" = "10" ]]
-      - name: 10 || '0'
-        run: |
-          [[ "${{ toJSON(10 || '0') }}" = "10" ]]
       - name: 10 || 'abc'
         run: |
           [[ "${{ toJSON(10 || 'abc') }}" = "10" ]]
@@ -548,6 +548,9 @@ jobs:
       - name: 3.14 && 3.14
         run: |
           [[ "${{ toJSON(3.14 && 3.14) }}" = "3.14" ]]
+      - name: 3.14 && 0.0
+        run: |
+          [[ "${{ toJSON(3.14 && 0.0) }}" = "0" ]]
       - name: 3.14 && Infinity
         run: |
           [[ "${{ toJSON(3.14 && Infinity) }}" = "Infinity" ]]
@@ -560,9 +563,6 @@ jobs:
       - name: 3.14 && ''
         run: |
           [[ "${{ toJSON(3.14 && '') }}" = """" ]]
-      - name: 3.14 && '0'
-        run: |
-          [[ "${{ toJSON(3.14 && '0') }}" = ""0"" ]]
       - name: 3.14 && 'abc'
         run: |
           [[ "${{ toJSON(3.14 && 'abc') }}" = ""abc"" ]]
@@ -588,6 +588,9 @@ jobs:
       - name: 3.14 || 3.14
         run: |
           [[ "${{ toJSON(3.14 || 3.14) }}" = "3.14" ]]
+      - name: 3.14 || 0.0
+        run: |
+          [[ "${{ toJSON(3.14 || 0.0) }}" = "3.14" ]]
       - name: 3.14 || Infinity
         run: |
           [[ "${{ toJSON(3.14 || Infinity) }}" = "3.14" ]]
@@ -600,9 +603,6 @@ jobs:
       - name: 3.14 || ''
         run: |
           [[ "${{ toJSON(3.14 || '') }}" = "3.14" ]]
-      - name: 3.14 || '0'
-        run: |
-          [[ "${{ toJSON(3.14 || '0') }}" = "3.14" ]]
       - name: 3.14 || 'abc'
         run: |
           [[ "${{ toJSON(3.14 || 'abc') }}" = "3.14" ]]
@@ -628,6 +628,9 @@ jobs:
       - name: Infinity && 3.14
         run: |
           [[ "${{ toJSON(Infinity && 3.14) }}" = "3.14" ]]
+      - name: Infinity && 0.0
+        run: |
+          [[ "${{ toJSON(Infinity && 0.0) }}" = "0" ]]
       - name: Infinity && Infinity
         run: |
           [[ "${{ toJSON(Infinity && Infinity) }}" = "Infinity" ]]
@@ -640,9 +643,6 @@ jobs:
       - name: Infinity && ''
         run: |
           [[ "${{ toJSON(Infinity && '') }}" = """" ]]
-      - name: Infinity && '0'
-        run: |
-          [[ "${{ toJSON(Infinity && '0') }}" = ""0"" ]]
       - name: Infinity && 'abc'
         run: |
           [[ "${{ toJSON(Infinity && 'abc') }}" = ""abc"" ]]
@@ -668,6 +668,9 @@ jobs:
       - name: Infinity || 3.14
         run: |
           [[ "${{ toJSON(Infinity || 3.14) }}" = "Infinity" ]]
+      - name: Infinity || 0.0
+        run: |
+          [[ "${{ toJSON(Infinity || 0.0) }}" = "Infinity" ]]
       - name: Infinity || Infinity
         run: |
           [[ "${{ toJSON(Infinity || Infinity) }}" = "Infinity" ]]
@@ -680,9 +683,6 @@ jobs:
       - name: Infinity || ''
         run: |
           [[ "${{ toJSON(Infinity || '') }}" = "Infinity" ]]
-      - name: Infinity || '0'
-        run: |
-          [[ "${{ toJSON(Infinity || '0') }}" = "Infinity" ]]
       - name: Infinity || 'abc'
         run: |
           [[ "${{ toJSON(Infinity || 'abc') }}" = "Infinity" ]]
@@ -708,6 +708,9 @@ jobs:
       - name: -Infinity && 3.14
         run: |
           [[ "${{ toJSON(-Infinity && 3.14) }}" = "3.14" ]]
+      - name: -Infinity && 0.0
+        run: |
+          [[ "${{ toJSON(-Infinity && 0.0) }}" = "0" ]]
       - name: -Infinity && Infinity
         run: |
           [[ "${{ toJSON(-Infinity && Infinity) }}" = "Infinity" ]]
@@ -720,9 +723,6 @@ jobs:
       - name: -Infinity && ''
         run: |
           [[ "${{ toJSON(-Infinity && '') }}" = """" ]]
-      - name: -Infinity && '0'
-        run: |
-          [[ "${{ toJSON(-Infinity && '0') }}" = ""0"" ]]
       - name: -Infinity && 'abc'
         run: |
           [[ "${{ toJSON(-Infinity && 'abc') }}" = ""abc"" ]]
@@ -748,6 +748,9 @@ jobs:
       - name: -Infinity || 3.14
         run: |
           [[ "${{ toJSON(-Infinity || 3.14) }}" = "-Infinity" ]]
+      - name: -Infinity || 0.0
+        run: |
+          [[ "${{ toJSON(-Infinity || 0.0) }}" = "-Infinity" ]]
       - name: -Infinity || Infinity
         run: |
           [[ "${{ toJSON(-Infinity || Infinity) }}" = "-Infinity" ]]
@@ -760,9 +763,6 @@ jobs:
       - name: -Infinity || ''
         run: |
           [[ "${{ toJSON(-Infinity || '') }}" = "-Infinity" ]]
-      - name: -Infinity || '0'
-        run: |
-          [[ "${{ toJSON(-Infinity || '0') }}" = "-Infinity" ]]
       - name: -Infinity || 'abc'
         run: |
           [[ "${{ toJSON(-Infinity || 'abc') }}" = "-Infinity" ]]
@@ -788,6 +788,9 @@ jobs:
       - name: NaN && 3.14
         run: |
           [[ "${{ toJSON(NaN && 3.14) }}" = "NaN" ]]
+      - name: NaN && 0.0
+        run: |
+          [[ "${{ toJSON(NaN && 0.0) }}" = "NaN" ]]
       - name: NaN && Infinity
         run: |
           [[ "${{ toJSON(NaN && Infinity) }}" = "NaN" ]]
@@ -800,9 +803,6 @@ jobs:
       - name: NaN && ''
         run: |
           [[ "${{ toJSON(NaN && '') }}" = "NaN" ]]
-      - name: NaN && '0'
-        run: |
-          [[ "${{ toJSON(NaN && '0') }}" = "NaN" ]]
       - name: NaN && 'abc'
         run: |
           [[ "${{ toJSON(NaN && 'abc') }}" = "NaN" ]]
@@ -828,6 +828,9 @@ jobs:
       - name: NaN || 3.14
         run: |
           [[ "${{ toJSON(NaN || 3.14) }}" = "3.14" ]]
+      - name: NaN || 0.0
+        run: |
+          [[ "${{ toJSON(NaN || 0.0) }}" = "0" ]]
       - name: NaN || Infinity
         run: |
           [[ "${{ toJSON(NaN || Infinity) }}" = "Infinity" ]]
@@ -840,9 +843,6 @@ jobs:
       - name: NaN || ''
         run: |
           [[ "${{ toJSON(NaN || '') }}" = """" ]]
-      - name: NaN || '0'
-        run: |
-          [[ "${{ toJSON(NaN || '0') }}" = ""0"" ]]
       - name: NaN || 'abc'
         run: |
           [[ "${{ toJSON(NaN || 'abc') }}" = ""abc"" ]]
@@ -868,6 +868,9 @@ jobs:
       - name: "'' && 3.14"
         run: |
           [[ "${{ toJSON('' && 3.14) }}" = "" ]]
+      - name: "'' && 0.0"
+        run: |
+          [[ "${{ toJSON('' && 0.0) }}" = "" ]]
       - name: "'' && Infinity"
         run: |
           [[ "${{ toJSON('' && Infinity) }}" = "" ]]
@@ -880,9 +883,6 @@ jobs:
       - name: "'' && ''"
         run: |
           [[ "${{ toJSON('' && '') }}" = "" ]]
-      - name: "'' && '0'"
-        run: |
-          [[ "${{ toJSON('' && '0') }}" = "" ]]
       - name: "'' && 'abc'"
         run: |
           [[ "${{ toJSON('' && 'abc') }}" = "" ]]
@@ -908,6 +908,9 @@ jobs:
       - name: "'' || 3.14"
         run: |
           [[ "${{ toJSON('' || 3.14) }}" = "3.14" ]]
+      - name: "'' || 0.0"
+        run: |
+          [[ "${{ toJSON('' || 0.0) }}" = "0" ]]
       - name: "'' || Infinity"
         run: |
           [[ "${{ toJSON('' || Infinity) }}" = "Infinity" ]]
@@ -920,9 +923,6 @@ jobs:
       - name: "'' || ''"
         run: |
           [[ "${{ toJSON('' || '') }}" = """" ]]
-      - name: "'' || '0'"
-        run: |
-          [[ "${{ toJSON('' || '0') }}" = ""0"" ]]
       - name: "'' || 'abc'"
         run: |
           [[ "${{ toJSON('' || 'abc') }}" = ""abc"" ]]
@@ -948,6 +948,9 @@ jobs:
       - name: "'abc' && 3.14"
         run: |
           [[ "${{ toJSON('abc' && 3.14) }}" = "3.14" ]]
+      - name: "'abc' && 0.0"
+        run: |
+          [[ "${{ toJSON('abc' && 0.0) }}" = "0" ]]
       - name: "'abc' && Infinity"
         run: |
           [[ "${{ toJSON('abc' && Infinity) }}" = "Infinity" ]]
@@ -960,9 +963,6 @@ jobs:
       - name: "'abc' && ''"
         run: |
           [[ "${{ toJSON('abc' && '') }}" = """" ]]
-      - name: "'abc' && '0'"
-        run: |
-          [[ "${{ toJSON('abc' && '0') }}" = ""0"" ]]
       - name: "'abc' && 'abc'"
         run: |
           [[ "${{ toJSON('abc' && 'abc') }}" = ""abc"" ]]
@@ -988,6 +988,9 @@ jobs:
       - name: "'abc' || 3.14"
         run: |
           [[ "${{ toJSON('abc' || 3.14) }}" = "abc" ]]
+      - name: "'abc' || 0.0"
+        run: |
+          [[ "${{ toJSON('abc' || 0.0) }}" = "abc" ]]
       - name: "'abc' || Infinity"
         run: |
           [[ "${{ toJSON('abc' || Infinity) }}" = "abc" ]]
@@ -1000,9 +1003,6 @@ jobs:
       - name: "'abc' || ''"
         run: |
           [[ "${{ toJSON('abc' || '') }}" = "abc" ]]
-      - name: "'abc' || '0'"
-        run: |
-          [[ "${{ toJSON('abc' || '0') }}" = "abc" ]]
       - name: "'abc' || 'abc'"
         run: |
           [[ "${{ toJSON('abc' || 'abc') }}" = "abc" ]]
