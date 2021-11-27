@@ -1007,6 +1007,12 @@ jobs:
         run: |
           [[ "${{ toJSON('abc' || 'abc') }}" = "abc" ]]
 
+      - run: |
+          [[ "${{ toJSON(fromJSON('[]') && fromJSON('[]')) }}" = "[]" ]]
+          [[ "${{ toJSON(fromJSON('[1]') && fromJSON('[1]')) }}" = "$( echo -e "[\n  1\n]" )" ]]
+          [[ "${{ toJSON(fromJSON('{}') && fromJSON('{}')) }}" = "{}" ]]
+          [[ "${{ toJSON(fromJSON('{"a":1}') && fromJSON('{"a":1}')) }}" = "$( echo -e "{\n  "a": 1\n}" )" ]]
+
 
   functions:
     runs-on: ubuntu-latest
