@@ -1050,6 +1050,7 @@ jobs:
   functions:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Test contains(array, value) with type coercion to strings
         run: |
           [ "${{ contains(fromJSON('["first","second"]'), 'first') }}" = "true" ]
@@ -1094,7 +1095,6 @@ jobs:
           [ "${{ format('{{Hello {0} {1} {2}!}}', 'Mona', 'the', 'Octocat') }}" = "{Hello Mona the Octocat!}" ]
           [ "${{ format('Hello "{0}" {1} {2}', null, true, 3.14) }}" = "Hello "" true 3.14" ]
           [ "${{ format(true) }}" = "true" ]
-          [ "${{ format('{0}}', '{1}', 'World') }}" = "adsf" ]
 
       - name: Test join(array, separator) with type coercion to strings
         run: |
@@ -1117,10 +1117,10 @@ jobs:
       - name: Test hashFiles(path)
         run: |
           # TODO: investigate why hashFiles() doesn't return a string
-          # [ "${{ hashFiles('**/non-existant-files') }}" = "" ]
-          # [ "${{ hashFiles('**/index.js') }}" = "xxxx" ]
-          # [ "${{ hashFiles('**/for-hashing*') }}" = "xxxx" ]
-          # [ "${{ hashFiles('**/for-hashing-1.txt', '**/for-hashing-2.txt') }}" = "xxxx" ]
+          [ "${{ hashFiles('**/non-existant-files') == '' }}" = "true" ]
+          [ "${{ hashFiles('./index.js') }}" = "e121dd9fb721187b9e75966448cc2c3bd0b96dd135b9fa95b1daaf0a890d1c4b" ]
+          [ "${{ hashFiles('**/for-hashing*') }}" = "4a4581226bce4a793ab3e078779f40f170d64d709fab1fcf478b1dc3603c4b6c" ]
+          [ "${{ hashFiles('**/for-hashing-1.txt', '**/for-hashing-2.txt') }}" = "4a4581226bce4a793ab3e078779f40f170d64d709fab1fcf478b1dc3603c4b6c" ]
 
       - name: Test object filters
         run: |
