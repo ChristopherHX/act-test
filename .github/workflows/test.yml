@@ -1063,6 +1063,7 @@ jobs:
           [ "${{ contains(fromJSON('[3.14,"second"]'), '3.14') }}" = "true" ]
           [ "${{ contains(fromJSON('[3.14,"second"]'), 3.14) }}" = "true" ]
           [ "${{ contains(fromJSON('["","second"]'), fromJSON('[]')) }}" = "false" ]
+          [ "${{ contains(github.event.commits, github.event.commits[0]) }}" = "true" ]
           [ "${{ contains(fromJSON('["","second"]'), fromJSON('{}')) }}" = "false" ]
           [ "${{ contains('Hello world', 'llo') }}" = "true" ]
           [ "${{ contains('3.141592', 3.14) }}" = "true" ]
@@ -1088,10 +1089,12 @@ jobs:
 
       - name: Test format(formatString, ...args) with type coercion to strings
         run: |
+          [ "${{ format('text') }}" = "text" ]
           [ "${{ format('Hello {0} {1} {2}!', 'Mona', 'the', 'Octocat') }}" = "Hello Mona the Octocat!" ]
           [ "${{ format('{{Hello {0} {1} {2}!}}', 'Mona', 'the', 'Octocat') }}" = "{Hello Mona the Octocat!}" ]
           [ "${{ format('Hello "{0}" {1} {2}', null, true, 3.14) }}" = "Hello "" true 3.14" ]
           [ "${{ format(true) }}" = "true" ]
+          [ "${{ format('{0}}', '{1}', 'World') }}" = "adsf" ]
 
       - name: Test join(array, separator) with type coercion to strings
         run: |
