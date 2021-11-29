@@ -77,7 +77,7 @@ jobs:
           [ "${{ fromJSON('{}') < 2 }}" = "false" ]
           [ "${{ fromJSON('{"a":1}') < 2 }}" = "false" ]
           
-          [ "${{ 'a' > 'A' }}" = "true" ]
+          [ "${{ 'a' == 'A' }}" = "true" ]
 
   booleans:
     runs-on: ubuntu-latest
