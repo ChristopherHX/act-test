@@ -1,0 +1,16 @@
+name: "Test Composite Action"
+description: "Test Composite Action Description"
+
+runs:
+  using: "composite"
+  steps:
+    - id: step1
+      name: Step 1 (Composite)
+      shell: bash
+      run: |
+        echo "Step 1 (Composite)"
+    - id: step2
+      name: Step 2 (Composite)
+      shell: bash
+      run: |
+        echo "Step 2 (Composite)"

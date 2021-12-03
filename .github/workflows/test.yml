@@ -6,43 +6,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - run: echo "build"
-
-  setup:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - run: echo "setup"
-
-  test:
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
-      - run: echo "test"
-      - run: exit 1
-
-  teardown:
-    runs-on: ubuntu-latest
-    needs: [test]
-    if: ${{ always() }}
-    steps:
-      - run: echo "teardown"
-
-  run-if-build:
-    runs-on: ubuntu-latest
-    needs: [test]
-    if: failure()
-    steps:
-      - run: echo "run-if-build"
-
-  after-teardown:
-    runs-on: ubuntu-latest
-    needs: [teardown]
-    steps:
-      - run: echo "after teardown"
-
-  after-test:
-    runs-on: ubuntu-latest
-    needs: [test]
-    steps:
-      - run: echo "after test"
+      - id: a | b
+        run: echo "build"
+      - uses: ./.github/actions/composite
+      - name: after composite action
+        run: echo "build"
