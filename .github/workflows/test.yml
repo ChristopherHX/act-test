@@ -1,6 +1,10 @@
 name: expressions
 on: push
-  
+
+env:
+  TRUE: "true"
+  FALSE: "false"
+  EMPTY: ""  
 
 jobs:
   literals:
@@ -1101,12 +1105,15 @@ jobs:
       - name: Test join(array, separator) with type coercion to strings
         run: |
           [ "${{ join(fromJSON('[1,2,3]'), 'x') }}" = "1x2x3" ]
+          [ "${{ join(fromJSON('[1,2,3]'), 'xx') }}" = "1xx2xx3" ]
           [ "${{ join(fromJSON('["a","b","c"]'), '.') }}" = "a.b.c" ]
+          [ "${{ join(fromJSON('["a","b","c"]')) }}" = "a,b,c" ]
           [ "${{ join(fromJSON('[true,false]'), '/') }}" = "true/false" ]
           [ "${{ join('abc', '.') }}" = "abc" ]
           [ "${{ join(123, '.') }}" = "123" ]
           [ "${{ join(true, '/') }}" = "true" ]
           [ "${{ join(null, NaN) }}" = "" ]
+          [ "${{ join(fromJSON('{"a":1,"b":2}'), '|') }}" = "" ]
 
       - name: Test toJSON(value)
         run: |
@@ -1114,11 +1121,10 @@ jobs:
 
       - name: Test fromJSON(value)
         run: |
-          [ "${{ fromJSON('"3.14"') }}" = "3.14" ]
+          [ "${{ fromJSON('"3.14"') == 3.14 }}" = "true" ]
 
       - name: Test hashFiles(path)
         run: |
-          # TODO: investigate why hashFiles() doesn't return a string
           [ "${{ hashFiles('**/non-existant-files') == '' }}" = "true" ]
           [ "${{ hashFiles('./index.js') }}" = "e121dd9fb721187b9e75966448cc2c3bd0b96dd135b9fa95b1daaf0a890d1c4b" ]
           [ "${{ hashFiles('**/for-hashing*') }}" = "4a4581226bce4a793ab3e078779f40f170d64d709fab1fcf478b1dc3603c4b6c" ]
@@ -1127,6 +1133,165 @@ jobs:
       - name: Test object filters
         run: |
           [ "${{ join(fromJSON('[{"name":"apple"},{"name":"orange"}]').*.name, ',') }}" = "apple,orange" ]
+
+  ifs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Test if: true"
+        if: true
+        run: |
+          echo "if: true"
+
+      - name: "Test if: null"
+        if: null
+        run: |
+          echo "if: null"
+
+      - name: "Test if: 0"
+        if: 0
+        run: |
+          exit 1
+
+      - name: "Test if: 3"
+        if: 3
+        run: |
+          echo "if: 3"
+
+      - name: "Test if: ''"
+        if: ''
+        run: |
+          echo "if: ''"
+
+      # Note: GH tries to evaluate "if: 'abc' as context abc"
+      # - name: "Test if: 'abc'"
+      #   if: 'abc'
+      #   run: |
+      #     echo "if: 'abc'"
+      - name: "Test if: github.job"
+        if: github.job
+        run: |
+          echo "if: github.job"
+
+      - name: "Test if: github.empty_str"
+        if: github.empty_str
+        run: |
+          exit 1
+
+      - name: "Test if: env.TRUE"
+        if: env.TRUE
+        run: |
+          exit 1
+
+      - name: "Test if: env.FALSE"
+        if: env.FALSE
+        run: |
+          exit 1
+
+      - name: "Test if: env.EMPTY"
+        if: env.EMPTY
+        run: |
+          exit 1
+
+      - name: "Test if: fromJSON"
+        if: fromJSON('{"a":1}')
+        run: |
+          echo "if: fromJSON"
+
+      - name: "Test if: 1 && true"
+        if: 1 && true
+        run: |
+          echo "if: 1 && true"
+
+      - name: "Test if: 0 || NaN"
+        if: 0 || NaN
+        run: |
+          exit 1
+
+      - name: "Test if: true || null"
+        if: true || null
+        run: |
+          echo "if: true || null"
+
+      - name: "Test if: null || true"
+        if: null || true
+        run: |
+          echo "if: null || true"
+
+
+      - name: "Test if: 0 || null"
+        if: ${{ 0 || null }}
+        run: |
+          echo "if: 0 || null"
+
+      - name: "Test if: true"
+        if: ${{ true }}
+        run: |
+          echo "if: true"
+
+      - name: "Test if: null"
+        if: ${{ null }}
+        run: |
+          echo "if: null"
+
+      - name: "Test if: 0"
+        if: ${{ 0 }}
+        run: |
+          exit 1
+
+      - name: "Test if: 3"
+        if: ${{ 3 }}
+        run: |
+          echo "if: 3"
+
+      - name: "Test if: ''"
+        if: ${{ '' }}
+        run: |
+          echo "if: ''"
+
+      # Note: GH tries to evaluate "if: 'abc' as context abc"
+      # - name: "Test if: 'abc'"
+      #   if: 'abc'
+      #   run: |
+      #     echo "if: 'abc'"
+      - name: "Test if: github.job"
+        if: ${{ github.job }}
+        run: |
+          echo "if: github.job"
+
+      - name: "Test if: env.TRUE"
+        if: ${{ env.TRUE }}
+        run: |
+          exit 1
+
+      - name: "Test if: env.FALSE"
+        if: ${{ env.FALSE }}
+        run: |
+          exit 1
+
+      - name: "Test if: env.EMPTY"
+        if: ${{ env.EMPTY }}
+        run: |
+          exit 1
+
+      - name: "Test if: fromJSON"
+        if: ${{ fromJSON('{"a":1}') }}
+        run: |
+          echo "if: fromJSON"
+
+      - name: "Test if: 1 && true"
+        if: ${{ 1 && true }}
+        run: |
+          echo "if: 1 && true"
+
+      - name: "Test if: 0 || NaN"
+        if: ${{ 0 || NaN }}
+        run: |
+          exit 1
+
+      - name: "Test if: 0 || null"
+        if: ${{ 0 || null }}
+        run: |
+          echo "if: 0 || null"
 
   contexts:
     runs-on: ubuntu-latest
