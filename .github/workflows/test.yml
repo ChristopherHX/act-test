@@ -7,7 +7,7 @@ env:
 
 jobs:
   ifs:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: "Test if: true"
         if: true
