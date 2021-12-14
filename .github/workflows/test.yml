@@ -2,7 +2,7 @@ name: expressions
 on: push
 jobs:
   ifs:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: "Test if: true"
         if: true
