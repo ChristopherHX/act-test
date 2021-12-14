@@ -1,5 +1,10 @@
 name: expressions
 on: push
+env:
+  TRUE: "true"
+  FALSE: "false"
+  EMPTY: ""  
+
 jobs:
   ifs:
     runs-on: self-hosted
